@@ -8,11 +8,15 @@ import {
   CheckCircle2, Code2, Database, Network, Quote, ShieldCheck, ChevronRight, User, Menu, X
 } from 'lucide-react';
 
+import TopHeader from '@/components/layout/topHeader';
+import NavLink from '@/components/ui/navLink';
+
 export default function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-surface-800 font-sans overflow-x-hidden">
+
       
       {/* 1. TOP HEADER / NAVIGATION */}
       <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
@@ -29,6 +33,7 @@ export default function LandingPage() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-2">
+            <NavLink href='/'>Home</NavLink>
             <NavLink href="/courses">Courses</NavLink>
             <NavLink href="/interview">Interview Prep</NavLink>
             <NavLink href="/blog">Blog</NavLink>
@@ -196,14 +201,6 @@ export default function LandingPage() {
 }
 
 // --- HELPER COMPONENTS ---
-
-function NavLink({ href, children }: { href: string, children: React.ReactNode }) {
-  return (
-    <Link href={href} className="px-4 py-2 rounded-lg text-sm font-semibold text-surface-800 hover:text-brand-700 hover:bg-brand-50 transition-all">
-      {children}
-    </Link>
-  );
-}
 
 function MobileNavLink({ href, onClick, children }: { href: string, onClick: () => void, children: React.ReactNode }) {
   return (
