@@ -4,25 +4,20 @@ import React from 'react';
 import Link from 'next/link';
 import { 
   ArrowRight, BrainCircuit, BookOpenText, Laptop, BriefcaseBusiness, Sparkles, Star,
-  CheckCircle2, Code2, Database, Network, Quote, ShieldCheck, ChevronRight, User
+  CheckCircle2, Code2, Database, Network, Quote, ShieldCheck, ChevronRight, User,
 } from 'lucide-react';
-
 import TopHeader from '@/components/layout/topHeader';
 import HeroSection from '@/components/blocks/heroSection';
+import FooterSection from '@/components/blocks/footer';
+
 
 export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white text-surface-800 font-sans overflow-x-hidden">
-    
-      {/* 1. TOP HEADER / NAVIGATION */}
-      <TopHeader></TopHeader>
-
-      {/* 2. HERO SECTION */}
-      <HeroSection/>
-
-      {/* 3. TRUSTED BY SECTION */}
-      <TrustedBySection />
+      <TopHeader></TopHeader>  {/* 1. TOP HEADER / NAVIGATION */}
+      <HeroSection/> {/* 2. HERO SECTION */}
+      <TrustedBySection /> {/* 3. TRUSTED BY SECTION */}
 
       {/* 4. CORE FEATURES GRID SECTION */}
       <section className="py-16 md:py-24 bg-surface-100 border-y border-surface-200 px-4 sm:px-6">
@@ -45,39 +40,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 5. ROADMAPS */}
-      <RoadmapsSection />
-
-      {/* 6. AI DEEP DIVE */}
-      <AIDeepDiveSection />
-
-      {/* 7. PIPELINE */}
-      <PipelineSection />
-
-      {/* 8. TESTIMONIALS */}
-      <TestimonialSection />
-
-      {/* 9. BOTTOM CTA */}
-      <BottomCTASection />
-
-      {/* 10. FOOTER */}
-      <footer className="py-10 md:py-12 bg-surface-950 text-surface-300 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="bg-white/10 p-2 rounded-xl text-white">
-              <BrainCircuit className="w-5 h-5" />
-            </div>
-            <span className="text-2xl font-black text-white tracking-tighter">
-              dobit<span className="text-brand-400">.ai</span>
-            </span>
-          </Link>
-          <p className="text-xs sm:text-sm font-medium">© 2026 Dobit Technologies. All rights reserved.</p>
-          <div className="flex items-center gap-6 text-sm font-semibold">
-            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-          </div>
-        </div>
-      </footer>
+      <RoadmapsSection />        {/* 5. ROADMAPS */}
+      <AIDeepDiveSection />      {/* 6. AI DEEP DIVE */}
+      <PipelineSection />        {/* 7. PIPELINE */}
+      <TestimonialSection />     {/* 8. TESTIMONIALS */}
+      <BottomCTASection />       {/* 9. BOTTOM CTA */}
+      <FooterSection/>           {/* 10. FOOTER */}
 
     </div>
   );
