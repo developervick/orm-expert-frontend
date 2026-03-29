@@ -1,310 +1,476 @@
 "use client";
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { 
-  Home, BookOpen, User, Settings, Layout, 
-  ChevronDown, ChevronRight, CheckCircle, 
-  PlayCircle, Code, FileText, Send, AlertCircle, Menu, List, X
+  ArrowRight, BrainCircuit, BookOpenText, 
+  MessagesSquare, Laptop, BriefcaseBusiness, Sparkles, Star,
+  CheckCircle2, Code2, Database, Network, Quote, ShieldCheck, ChevronRight, User, Menu, X
 } from 'lucide-react';
-import { courseSyllabus, exerciseContent } from './data'; // Import dynamic data
 
-export default function CourseApp() {
-  // Mobile Sidebar Toggles
-  const [isPrimaryOpen, setIsPrimaryOpen] = useState(false);
-  const [isSecondaryOpen, setIsSecondaryOpen] = useState(false);
-
-  // Accordion & Active State
-  const [expandedModules, setExpandedModules] = useState<string[]>(['m2']);
-  const [expandedChapters, setExpandedChapters] = useState<string[]>(['c2']);
-  const [activeExerciseId, setActiveExerciseId] = useState<string>('e4');
-
-  // Quiz State
-  const [blankAnswer, setBlankAnswer] = useState('');
-  const [mcqSelected, setMcqSelected] = useState<string | null>(null);
-  const [mcqSubmitted, setMcqSubmitted] = useState(false);
-
-  // Handlers
-  const toggleModule = (id: string) => setExpandedModules(prev => prev.includes(id) ? prev.filter(m => m !== id) : [...prev, id]);
-  const toggleChapter = (id: string) => setExpandedChapters(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]);
-
-  const handleMcqSubmit = () => { if (mcqSelected) setMcqSubmitted(true); };
-
-  // Fetch dynamic data for the current active exercise
-  const activeData = exerciseContent[activeExerciseId as keyof typeof exerciseContent];
+export default function LandingPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex h-screen w-full bg-surface-50 font-sans text-surface-800 overflow-hidden relative">
+    <div className="min-h-screen bg-white text-surface-800 font-sans overflow-x-hidden">
       
-      {/* MOBILE OVERLAYS */}
-      {(isPrimaryOpen || isSecondaryOpen) && (
-        <div className="fixed inset-0 bg-surface-900/50 z-40 lg:hidden backdrop-blur-sm" 
-             onClick={() => { setIsPrimaryOpen(false); setIsSecondaryOpen(false); }} />
-      )}
+      {/* 1. TOP HEADER / NAVIGATION */}
+      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+          
+          <Link href="/" className="flex items-center gap-2 group z-50">
+            <div className="bg-brand-600 p-2 sm:p-2.5 rounded-xl text-white shadow-lg shadow-brand-500/30">
+              <BrainCircuit className="w-5 h-5 sm:w-6 sm:h-6" />
+            </div>
+            <span className="text-2xl sm:text-3xl font-black text-surface-950 tracking-tighter">
+              dobit<span className="text-brand-600">.ai</span>
+            </span>
+          </Link>
 
-      {/* 1. PRIMARY SIDEBAR (Togglable on Mobile) */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-20 lg:w-64 bg-surface-900 flex flex-col items-center lg:items-start transition-transform duration-300 shadow-xl ${
-        isPrimaryOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-      } lg:static`}>
-        <div className="h-16 flex items-center justify-between lg:justify-start px-4 w-full border-b border-surface-800 text-white">
-          <div className="flex items-center">
-            <Layout className="w-8 h-8 text-brand-400" />
-            <span className="ml-3 font-bold text-xl hidden lg:block tracking-wide">ORM Expert</span>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-2">
+            <NavLink href="/courses">Courses</NavLink>
+            <NavLink href="/interview">Interview Prep</NavLink>
+            <NavLink href="/blog">Blog</NavLink>
+            <NavLink href="/jobs">Jobs Board</NavLink>
           </div>
-          {/* Mobile Close Button */}
-          <button className="lg:hidden text-surface-400 hover:text-white" onClick={() => setIsPrimaryOpen(false)}>
-            <X size={24} />
+
+          {/* Desktop CTAs */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link href="/login" className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">
+              Login
+            </Link>
+            <Link href="/signup" className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 group">
+              Start Free <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="md:hidden p-2 text-surface-600 hover:bg-surface-100 rounded-lg z-50"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
-        
-        <nav className="flex-1 w-full py-6 flex flex-col gap-2 px-3">
-          <NavItem icon={<Home />} label="Home" />
-          <NavItem icon={<BookOpen />} label="My Courses" active />
-          <NavItem icon={<User />} label="Profile" />
-        </nav>
-        <div className="w-full pb-6 px-3 border-t border-surface-800 pt-4">
-          <NavItem icon={<Settings />} label="Local Setup" />
+
+        {/* Mobile Dropdown Menu */}
+        <div className={`md:hidden absolute top-20 left-0 w-full bg-white border-b border-surface-200 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+          <div className="flex flex-col p-4 gap-2">
+            <MobileNavLink href="/courses" onClick={() => setIsMobileMenuOpen(false)}>Courses</MobileNavLink>
+            <MobileNavLink href="/interview" onClick={() => setIsMobileMenuOpen(false)}>Interview Prep</MobileNavLink>
+            <MobileNavLink href="/blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</MobileNavLink>
+            <MobileNavLink href="/jobs" onClick={() => setIsMobileMenuOpen(false)}>Jobs Board</MobileNavLink>
+            <div className="h-px w-full bg-surface-200 my-2"></div>
+            <div className="flex flex-col gap-3 pt-2">
+              <Link href="/login" className="text-center w-full py-3 text-sm font-semibold text-surface-700 bg-surface-50 rounded-xl">
+                Login
+              </Link>
+              <Link href="/signup" className="flex justify-center items-center gap-2 w-full bg-brand-600 text-white py-3 rounded-xl font-bold shadow-md">
+                Start Learning Free
+              </Link>
+            </div>
+          </div>
         </div>
-      </aside>
+      </nav>
 
-      {/* RIGHT SIDE (Header + Content Area) */}
-      <div className="flex-1 flex flex-col h-screen overflow-hidden w-full">
-        
-        {/* 2. HEADER */}
-        <header className="h-16 bg-white border-b border-surface-200 flex items-center justify-between px-4 lg:px-6 shrink-0 z-30 shadow-sm relative">
-          <div className="flex items-center gap-4">
-            {/* Mobile Hamburger Menu */}
-            <button className="lg:hidden p-2 text-surface-600 hover:bg-surface-100 rounded-lg" onClick={() => setIsPrimaryOpen(true)}>
-              <Menu size={24} />
-            </button>
-            
-            <div>
-              <h1 className="text-lg lg:text-xl font-bold text-surface-900 truncate">Mastering Database Queries</h1>
-              <p className="text-xs lg:text-sm text-surface-500 font-medium hidden sm:block">Backend Architecture Path</p>
+      {/* 2. HERO SECTION */}
+      <main className="pt-28 md:pt-40 pb-20 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Text Content */}
+          <div className="md:col-span-6 text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-50 text-brand-700 text-sm font-semibold rounded-full mb-6 border border-brand-200">
+              <Sparkles className="w-4 h-4 text-warning-400" />
+              AI-Powered Career Accelerator
+            </div>
+            <h1 className="text-5xl lg:text-7xl font-extrabold text-surface-950 leading-[0.95] tracking-tighter mb-6">
+              Learn<span className="text-brand-600">.</span> Prepare<span className="text-brand-600">.</span> Get Hired<span className="text-brand-600">.</span>
+            </h1>
+            <p className="text-xl text-surface-600 mb-10 leading-relaxed font-medium">
+                Watching videos won't get you hired. <strong className="text-brand-700">dobit.ai</strong> is your private, local coding companion that forces you to build, critiques designs in real-time, and simulates technical rounds.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
+              <Link href="/courses" className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-10 py-4.5 rounded-full text-lg font-black transition-all shadow-xl shadow-brand-500/30 active:scale-95 group">
+                Explore Courses <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link href="/interview" className="flex items-center gap-2 bg-white hover:bg-surface-100 text-brand-700 px-8 py-4.5 rounded-full text-lg font-bold transition-colors border-2 border-brand-100">
+                <Laptop className="w-5 h-5" /> Start Mock Interview
+              </Link>
             </div>
           </div>
-          
-          <div className="flex items-center gap-3">
-             {/* Mobile Course Nav Toggle */}
-             <button className="md:hidden p-2 text-brand-600 hover:bg-brand-50 rounded-lg mr-2" onClick={() => setIsSecondaryOpen(true)}>
-              <List size={24} />
-            </button>
-            <div className="text-right hidden sm:block">
-              <p className="text-sm font-bold text-surface-900">Vicky</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center border border-brand-200 text-brand-700 font-bold shrink-0">
-              V
-            </div>
-          </div>
-        </header>
 
-        {/* BOTTOM SECTION */}
-        <div className="flex flex-1 overflow-hidden relative">
-          
-          {/* 3. NESTED COURSE NAVIGATION (Togglable on Mobile) */}
-          <aside className={`absolute md:static inset-y-0 left-0 z-40 w-72 bg-surface-100 border-r border-surface-200 overflow-y-auto transition-transform duration-300 shadow-xl md:shadow-none ${
-            isSecondaryOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-          }`}>
-            <div className="p-5 border-b border-surface-200 bg-surface-50 flex justify-between items-center">
-              <div className="w-full">
-                <h2 className="text-xs font-bold text-surface-500 uppercase tracking-widest mb-3">Course Content</h2>
-                <div className="w-full bg-surface-200 rounded-full h-2">
-                  <div className="bg-brand-500 h-2 rounded-full shadow-sm" style={{ width: '45%' }}></div>
-                </div>
+          {/* Right Visual "Abstract Coding/AI" Graphic */}
+          <div className="md:col-span-6 relative flex justify-center items-center mt-12 md:mt-0">
+            {/* The primary graphic "Code Sandbox" window */}
+            <div className="w-[450px] h-[350px] bg-surface-950 rounded-2xl shadow-2xl p-6 border-4 border-white relative z-10 rotate-[-2deg] scale-100 lg:scale-110">
+              <div className="flex gap-2.5 mb-5 border-b border-surface-800 pb-4">
+                <div className="w-3.5 h-3.5 rounded-full bg-error-500"></div>
+                <div className="w-3.5 h-3.5 rounded-full bg-warning-400"></div>
+                <div className="w-3.5 h-3.5 rounded-full bg-success-500"></div>
+                <span className="text-surface-600 font-mono text-xs ml-auto">dobit_ai_sandbox.py</span>
               </div>
-              {/* Mobile Close Button for Secondary Sidebar */}
-              <button className="md:hidden ml-4 text-surface-400 hover:text-surface-800" onClick={() => setIsSecondaryOpen(false)}>
-                <X size={20} />
-              </button>
+              <div className="text-[#a78bfa] font-mono text-sm leading-relaxed">
+                <p># AI Interview Simulation</p>
+                <p className="text-surface-400">@dobit.ai/engine</p>
+                <p>db_query = User.query.include(posts)</p>
+                <p className="text-success-400">✓ Optimization found</p>
+                <p>result = "Joins implemented."</p>
+              </div>
             </div>
-
-            <div className="p-3">
-              {courseSyllabus.map(module => (
-                <div key={module.id} className="mb-2">
-                  <button onClick={() => toggleModule(module.id)} className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-surface-200 text-left transition-colors">
-                    <div className="flex items-center gap-2">
-                      {expandedModules.includes(module.id) ? <ChevronDown size={18} className="text-surface-400" /> : <ChevronRight size={18} className="text-surface-400"/>}
-                      <span className="font-bold text-sm text-surface-900">{module.title}</span>
-                    </div>
-                  </button>
-                  
-                  {expandedModules.includes(module.id) && (
-                    <div className="ml-5 border-l-2 border-surface-200 pl-3 mt-1 flex flex-col gap-1">
-                      {module.chapters.map(chapter => (
-                        <div key={chapter.id}>
-                          <button onClick={() => toggleChapter(chapter.id)} className="w-full flex items-center justify-between p-2.5 rounded-lg hover:bg-surface-200 text-left transition-colors">
-                            <span className="font-semibold text-sm text-surface-800">{chapter.title}</span>
-                            {expandedChapters.includes(chapter.id) ? <ChevronDown size={16} className="text-surface-400"/> : <ChevronRight size={16} className="text-surface-400"/>}
-                          </button>
-
-                          {expandedChapters.includes(chapter.id) && (
-                            <div className="ml-2 mt-1 flex flex-col gap-1 pb-2">
-                              {chapter.exercises.map(exercise => (
-                                <button
-                                  key={exercise.id}
-                                  onClick={() => {
-                                    setActiveExerciseId(exercise.id);
-                                    setIsSecondaryOpen(false); // Auto-close on mobile selection
-                                  }}
-                                  className={`w-full flex items-start gap-3 p-2.5 rounded-lg text-left text-sm transition-all ${
-                                    activeExerciseId === exercise.id 
-                                      ? 'bg-brand-50 text-brand-700 font-bold border border-brand-200 shadow-sm' 
-                                      : 'text-surface-600 hover:bg-surface-200 font-medium'
-                                  }`}
-                                >
-                                  <div className="mt-0.5 shrink-0">
-                                    {exercise.completed ? <CheckCircle size={16} className="text-success-500" />
-                                    : exercise.type === 'video' ? <PlayCircle size={16} className="text-info-500" />
-                                    : exercise.type === 'code' ? <Code size={16} className="text-warning-500" />
-                                    : <FileText size={16} className="text-surface-400" />}
-                                  </div>
-                                  <span className="leading-tight">{exercise.title}</span>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+            {/* Floating context cards */}
+            <div className="absolute -top-12 -right-8 bg-warning-400 text-white p-4 rounded-xl shadow-xl z-20 rotate-[10deg] flex items-center gap-3">
+              <Star className="w-8 h-8 fill-white" />
+              <div className="text-right">
+                <p className="text-2xl font-black">9.8</p>
+                <p className="text-xs font-bold">Offer Rate</p>
+              </div>
             </div>
-          </aside>
-
-          {/* 4. MAIN CONTENT AREA (DYNAMIC RENDERING) */}
-          <main className="flex-1 overflow-y-auto bg-surface-50 relative w-full">
-            <div className="max-w-4xl mx-auto p-4 sm:p-8 lg:p-12">
-              
-              {activeData ? (
-                <>
-                  <div className="mb-10">
-                    <div className="inline-block px-4 py-1.5 bg-warning-50 text-warning-600 text-xs font-bold rounded-full mb-4 uppercase tracking-widest border border-warning-200">
-                      {activeData.badge}
-                    </div>
-                    <h2 className="text-3xl sm:text-4xl font-bold text-surface-900 mb-4 tracking-tight">{activeData.title}</h2>
-                    <p className="text-base sm:text-lg text-surface-700 leading-relaxed font-medium">
-                      {activeData.description}
-                    </p>
-                  </div>
-
-                  {/* DYNAMIC SECTIONS LOOP */}
-                  {activeData.sections.map((section: any) => {
-                    
-                    if (section.type === "fill_in_blank") {
-                      const isCorrect = blankAnswer.toLowerCase().trim() === section.correctAnswer.toLowerCase();
-                      return (
-                        <div key={section.id} className={`bg-white p-6 sm:p-8 rounded-2xl shadow-sm border mb-8 text-surface-800 leading-relaxed transition-colors duration-300 ${isCorrect ? 'border-success-400 bg-success-50/30' : 'border-surface-200'}`}>
-                          <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-xl sm:text-2xl font-bold text-surface-900">{section.heading}</h3>
-                            {isCorrect && <span className="bg-success-100 text-success-600 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1"><CheckCircle size={14}/> Correct</span>}
-                          </div>
-                          <div className="bg-surface-50 p-4 sm:p-5 rounded-xl border border-surface-200 flex flex-wrap items-center gap-3 text-base sm:text-lg font-medium">
-                            <span>{section.textBefore}</span>
-                            <input 
-                              type="text" 
-                              value={blankAnswer}
-                              onChange={(e) => setBlankAnswer(e.target.value)}
-                              placeholder="Type answer..." 
-                              className={`border-b-2 bg-white px-3 py-1 outline-none font-bold w-32 sm:w-40 transition-colors shadow-sm ${
-                                isCorrect ? 'border-success-500 text-success-600' : 'border-surface-300 text-brand-600 focus:border-brand-500'
-                              }`}
-                            />
-                            <span>{section.textAfter}</span>
-                          </div>
-                        </div>
-                      );
-                    }
-
-                    if (section.type === "mcq") {
-                      const isCorrect = mcqSelected === section.correctAnswer;
-                      return (
-                        <div key={section.id} className={`bg-white p-6 sm:p-8 rounded-2xl shadow-sm border mb-8 transition-colors duration-300 ${
-                          mcqSubmitted ? (isCorrect ? 'border-success-400 bg-success-50/30' : 'border-error-400 bg-error-50/30') : 'border-surface-200'
-                        }`}>
-                          <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-lg sm:text-xl font-bold text-surface-900">{section.heading}</h3>
-                            {mcqSubmitted && (
-                              <span className={`px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1 ${isCorrect ? 'bg-success-100 text-success-600' : 'bg-error-100 text-error-600'}`}>
-                                {isCorrect ? <CheckCircle size={14}/> : <AlertCircle size={14}/>}
-                                {isCorrect ? 'Correct' : 'Incorrect'}
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-surface-700 mb-6 font-medium text-base sm:text-lg">{section.question}</p>
-                          <div className="flex flex-col gap-3">
-                            {section.options.map((option: string, i: number) => {
-                              const isSelected = mcqSelected === option;
-                              let optionClasses = "flex items-center p-3 sm:p-4 border rounded-xl cursor-pointer transition-all ";
-                              if (mcqSubmitted) {
-                                if (option === section.correctAnswer) optionClasses += "border-success-400 bg-success-50 ";
-                                else if (isSelected && !isCorrect) optionClasses += "border-error-400 bg-error-50 ";
-                                else optionClasses += "border-surface-200 opacity-50 ";
-                              } else {
-                                optionClasses += isSelected ? "border-brand-500 bg-brand-50" : "border-surface-200 hover:bg-surface-50 hover:border-brand-300";
-                              }
-                              return (
-                                <label key={i} className={optionClasses}>
-                                  <input type="radio" disabled={mcqSubmitted} checked={isSelected} onChange={() => setMcqSelected(option)} className="w-5 h-5 text-brand-600 border-surface-300 focus:ring-brand-500" />
-                                  <span className={`ml-3 sm:ml-4 font-semibold text-base sm:text-lg ${mcqSubmitted && option === section.correctAnswer ? 'text-success-700' : 'text-surface-800'}`}>
-                                    <code>{option}</code>
-                                  </span>
-                                </label>
-                              );
-                            })}
-                          </div>
-                          <div className="mt-8 flex justify-end">
-                            {!mcqSubmitted ? (
-                              <button onClick={handleMcqSubmit} disabled={!mcqSelected} className="bg-surface-900 disabled:opacity-50 text-white px-6 sm:px-8 py-3 rounded-xl font-bold transition-colors">Submit Answer</button>
-                            ) : (
-                              <button onClick={() => { setMcqSubmitted(false); setMcqSelected(null); }} className="bg-surface-200 text-surface-800 px-6 sm:px-8 py-3 rounded-xl font-bold transition-colors">Try Again</button>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    }
-
-                    if (section.type === "code_sandbox") {
-                      return (
-                        <div key={section.id} className="bg-white rounded-2xl shadow-lg border border-surface-200 overflow-hidden mb-12">
-                          <div className="bg-surface-900 px-4 sm:px-6 py-4 flex items-center justify-between">
-                            <h3 className="text-white font-semibold flex items-center gap-2 text-sm sm:text-base"><Code size={20} className="text-brand-400"/> {section.heading}</h3>
-                            <div className="flex gap-2.5">
-                              <div className="w-3.5 h-3.5 rounded-full bg-error-500"></div><div className="w-3.5 h-3.5 rounded-full bg-warning-400"></div><div className="w-3.5 h-3.5 rounded-full bg-success-500"></div>
-                            </div>
-                          </div>
-                          <div className="p-4 sm:p-6 bg-surface-950">
-                            <p className="text-info-400 text-xs sm:text-sm mb-4 font-mono font-medium">{section.comment}</p>
-                            <textarea className="w-full h-48 bg-surface-900 text-surface-100 font-mono text-[13px] sm:text-[15px] p-4 sm:p-5 rounded-xl border border-surface-700 focus:border-brand-500 outline-none resize-none leading-relaxed" defaultValue={section.defaultCode} />
-                            <div className="mt-6 flex justify-end">
-                              <button className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-6 sm:px-8 py-3 rounded-xl font-bold transition-all shadow-lg active:scale-95"><Send size={18} /> Run Code</button>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
-                </>
-              ) : (
-                <div className="text-center py-20 text-surface-500">
-                  <BookOpen size={48} className="mx-auto mb-4 opacity-50" />
-                  <p className="text-lg">Select a lesson from the sidebar to begin.</p>
-                </div>
-              )}
-
+            <div className="absolute -bottom-10 -left-10 bg-brand-100 p-3 rounded-2xl shadow-xl z-0 border-2 border-white">
+              <MessagesSquare className="w-20 h-20 text-brand-600 opacity-50" />
             </div>
-          </main>
+          </div>
         </div>
-      </div>
+      </main>
+
+      {/* 3. TRUSTED BY SECTION */}
+      <TrustedBySection />
+
+      {/* 4. CORE FEATURES GRID SECTION */}
+      <section className="py-16 md:py-24 bg-surface-100 border-y border-surface-200 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-surface-950 leading-tight tracking-tighter mb-4">
+              Your Entire Career Path, <br className="hidden sm:block"/><span className="text-brand-600">Elevated by AI.</span>
+            </h2>
+            <p className="text-base sm:text-lg text-surface-600 font-medium leading-relaxed">
+              We've consolidated the critical pillars of career growth into one powerful platform, using AI to personalize your experience locally.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <FeatureCard icon={<BookOpenText/>} title="Expert Courses" desc="Deep-dive technical paths curated by industry leads." link="/courses" />
+            <FeatureCard icon={<Laptop/>} title="Mock Interviews" desc="Simulate real tech rounds with instant AI feedback." link="/interview" highlight />
+            <FeatureCard icon={<BookOpenText/>} title="Tech Blog" desc="Stay ahead with original insights and trends." link="/blog" />
+            <FeatureCard icon={<BriefcaseBusiness/>} title="Jobs Board" desc="Connect directly with verified hiring partners." link="/jobs" />
+          </div>
+        </div>
+      </section>
+
+      {/* 5. ROADMAPS */}
+      <RoadmapsSection />
+
+      {/* 6. AI DEEP DIVE */}
+      <AIDeepDiveSection />
+
+      {/* 7. PIPELINE */}
+      <PipelineSection />
+
+      {/* 8. TESTIMONIALS */}
+      <TestimonialSection />
+
+      {/* 9. BOTTOM CTA */}
+      <BottomCTASection />
+
+      {/* 10. FOOTER */}
+      <footer className="py-10 md:py-12 bg-surface-950 text-surface-300 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="bg-white/10 p-2 rounded-xl text-white">
+              <BrainCircuit className="w-5 h-5" />
+            </div>
+            <span className="text-2xl font-black text-white tracking-tighter">
+              dobit<span className="text-brand-400">.ai</span>
+            </span>
+          </Link>
+          <p className="text-xs sm:text-sm font-medium">© 2026 Dobit Technologies. All rights reserved.</p>
+          <div className="flex items-center gap-6 text-sm font-semibold">
+            <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+          </div>
+        </div>
+      </footer>
+
     </div>
   );
 }
 
-function NavItem({ icon, label, active = false }: { icon: React.ReactNode, label: string, active?: boolean }) {
+// --- HELPER COMPONENTS ---
+
+function NavLink({ href, children }: { href: string, children: React.ReactNode }) {
   return (
-    <button className={`w-full flex items-center justify-center lg:justify-start gap-4 p-3.5 rounded-xl transition-all ${active ? 'bg-brand-600 text-white shadow-md' : 'text-surface-400 hover:bg-surface-800 hover:text-white'}`}>
-      <div className={`${active ? 'text-white' : 'text-surface-400'}`}>{icon}</div>
-      <span className="font-semibold hidden lg:block tracking-wide">{label}</span>
-    </button>
+    <Link href={href} className="px-4 py-2 rounded-lg text-sm font-semibold text-surface-800 hover:text-brand-700 hover:bg-brand-50 transition-all">
+      {children}
+    </Link>
+  );
+}
+
+function MobileNavLink({ href, onClick, children }: { href: string, onClick: () => void, children: React.ReactNode }) {
+  return (
+    <Link href={href} onClick={onClick} className="px-4 py-3 rounded-xl text-base font-semibold text-surface-800 hover:text-brand-700 hover:bg-brand-50 transition-all w-full">
+      {children}
+    </Link>
+  );
+}
+
+function FeatureCard({ icon, title, desc, link, highlight=false }: { icon: React.ReactNode, title: string, desc: string, link: string, highlight?: boolean }) {
+  return (
+    <div className={`bg-white p-6 sm:p-8 rounded-2xl border transition-all duration-300 group flex flex-col justify-between ${
+      highlight ? 'border-brand-300 bg-brand-50 shadow-lg shadow-brand-500/10 lg:scale-105' : 'border-surface-200 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-500/10'
+    }`}>
+      <div>
+        <div className={`inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-xl mb-6 shadow-md ${
+          highlight ? 'bg-brand-600 text-white shadow-brand-500/30' : 'bg-surface-100 text-surface-600 group-hover:bg-brand-100 group-hover:text-brand-600'
+        }`}>
+          {React.cloneElement(icon as React.ReactElement, { className: 'w-6 h-6 sm:w-7 sm:h-7' })}
+        </div>
+        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-surface-950 mb-3 tracking-tight">{title}</h3>
+        <p className="text-sm sm:text-base text-surface-700 leading-relaxed font-medium mb-8 sm:mb-12">{desc}</p>
+      </div>
+      <Link href={link} className={`flex items-center gap-2 text-sm font-black transition-colors mt-auto ${
+        highlight ? 'text-brand-700 hover:text-brand-600' : 'text-brand-600 hover:text-brand-500'
+      }`}>
+        Learn More <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      </Link>
+    </div>
+  );
+}
+
+function TrustedBySection() {
+  return (
+    <section className="py-10 md:py-12 bg-white border-b border-surface-200 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+        <p className="text-xs sm:text-sm font-bold text-surface-400 uppercase tracking-widest mb-6 md:mb-8">
+          Empowering engineers to land roles at top companies
+        </p>
+        <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+          <div className="flex items-center gap-2 font-black text-lg sm:text-xl md:text-2xl text-surface-800"><Code2 className="w-6 h-6 sm:w-8 sm:h-8"/> TechCorp</div>
+          <div className="flex items-center gap-2 font-black text-lg sm:text-xl md:text-2xl text-surface-800"><Database className="w-6 h-6 sm:w-8 sm:h-8"/> DataSys</div>
+          <div className="flex items-center gap-2 font-black text-lg sm:text-xl md:text-2xl text-surface-800"><Network className="w-6 h-6 sm:w-8 sm:h-8"/> CloudNet</div>
+          <div className="flex items-center gap-2 font-black text-lg sm:text-xl md:text-2xl text-surface-800"><ShieldCheck className="w-6 h-6 sm:w-8 sm:h-8"/> SecureFlow</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function RoadmapsSection() {
+  const roadmaps = [
+    {
+      title: "Full-Stack Engineering",
+      desc: "Stop building to-do apps. Architect production-grade platforms using Next.js, Django, and Docker.",
+      tags: ["React", "Next.js", "Django ORM", "Docker"],
+      icon: <Laptop className="w-6 h-6 text-brand-500" />
+    },
+    {
+      title: "The SDE Interview",
+      desc: "Master the patterns, not just the code. Intensive drills on Data Structures, Algorithms, and Low-Level Design.",
+      tags: ["DSA", "High-Level Design", "Low-Level Design", "SQL"],
+      icon: <BookOpenText className="w-6 h-6 text-brand-500" />
+    },
+    {
+      title: "Applied AI Research",
+      desc: "Move beyond basic API wrappers. Train object detection models and build advanced RAG pipelines from scratch.",
+      tags: ["LLMs", "RAG Architecture", "Object Detection", "Python"],
+      icon: <BrainCircuit className="w-6 h-6 text-brand-500" />
+    }
+  ];
+
+  return (
+    <section className="py-16 md:py-24 bg-white px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-10 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+          <div className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-surface-950 tracking-tight mb-4">
+              Curated <span className="text-brand-600">Learning Paths</span>
+            </h2>
+            <p className="text-base sm:text-lg text-surface-600 font-medium leading-relaxed">
+              Don't guess what to learn next. Follow structured, industry-aligned roadmaps designed to take you from fundamentals to advanced engineering.
+            </p>
+          </div>
+          <Link href="/courses" className="hidden lg:flex items-center gap-2 text-brand-600 font-bold hover:text-brand-700 transition-colors">
+            View all paths <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {roadmaps.map((map, idx) => (
+            <div key={idx} className="bg-surface-50 border border-surface-200 p-6 sm:p-8 rounded-2xl hover:border-brand-300 hover:shadow-xl hover:shadow-brand-500/10 transition-all group flex flex-col">
+              <div className="bg-white w-12 h-12 sm:w-14 sm:h-14 rounded-xl shadow-sm border border-surface-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                {map.icon}
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-surface-900 mb-3">{map.title}</h3>
+              <p className="text-sm sm:text-base text-surface-600 font-medium mb-6 flex-1">{map.desc}</p>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {map.tags.map((tag, i) => (
+                  <span key={i} className="px-2 py-1 sm:px-3 sm:py-1 bg-surface-200 text-surface-700 text-[10px] sm:text-xs font-bold rounded-md">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <div className="text-brand-600 font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+                Start Path <ChevronRight className="w-4 h-4" />
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-8 flex justify-center lg:hidden">
+          <Link href="/courses" className="flex items-center gap-2 text-brand-600 font-bold hover:text-brand-700 transition-colors border border-brand-200 px-6 py-3 rounded-full bg-brand-50">
+            View all paths <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AIDeepDiveSection() {
+  return (
+    <section className="py-16 md:py-24 bg-surface-950 text-white px-4 sm:px-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="order-2 lg:order-1 relative w-full max-w-md mx-auto lg:max-w-full mt-8 lg:mt-0">
+          <div className="bg-surface-900 border border-surface-700 rounded-2xl p-5 sm:p-6 shadow-2xl relative z-10">
+            <div className="flex gap-3 sm:gap-4 items-start mb-6 border-b border-surface-800 pb-6">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-brand-600 flex items-center justify-center shrink-0">
+                <BrainCircuit className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              </div>
+              <div>
+                <p className="font-bold text-brand-300 mb-1 text-sm sm:text-base">dobit.ai Consultant</p>
+                <p className="text-xs sm:text-sm text-surface-300 leading-relaxed">
+                  Your Django ORM query here is going to hit the database 50 separate times in this loop. Refactor this using <code className="bg-surface-800 px-1 py-0.5 rounded text-surface-100">select_related()</code> or <code className="bg-surface-800 px-1 py-0.5 rounded text-surface-100">prefetch_related()</code> before we move on to the system design round.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-3 sm:gap-4 items-start">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-surface-700 flex items-center justify-center shrink-0">
+                <User className="w-4 h-4 sm:w-5 sm:h-5 text-surface-300" />
+              </div>
+              <div className="bg-surface-800 p-3 sm:p-4 rounded-xl text-xs sm:text-sm text-surface-200 w-full border border-surface-700">
+                Got it. Refactoring to optimize the backend query now.
+              </div>
+            </div>
+          </div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-brand-600/20 blur-[60px] sm:blur-[100px] rounded-full z-0 pointer-events-none"></div>
+        </div>
+        
+        <div className="order-1 lg:order-2 text-center lg:text-left">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-500/20 text-brand-300 text-xs sm:text-sm font-semibold rounded-full mb-6 border border-brand-500/30">
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" /> Zero-Latency Local Execution
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-6">
+            A Senior Engineer, living right on your local machine.
+          </h2>
+          <p className="text-base sm:text-lg text-surface-300 font-medium leading-relaxed mb-8">
+            Forget waiting on cloud APIs or worrying about your code being used as training data. The dobit.ai engine runs entirely on your local environment. It's an independent technical consultant that securely reviews your proprietary code, catches N+1 query bottlenecks, and pushes you to write cleaner architecture.
+          </p>
+          <ul className="space-y-3 sm:space-y-4 text-left inline-block lg:block">
+            {['Private context-aware code reviews', 'System design critiques', 'Real-time mock interview feedback'].map((item, i) => (
+              <li key={i} className="flex items-center gap-3 text-surface-200 font-medium text-sm sm:text-base">
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-brand-400 shrink-0" /> {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PipelineSection() {
+  const steps = [
+    { num: "01", title: "Audit", desc: "Our local engine analyzes your code to expose your hidden weaknesses in HLD and algorithms." },
+    { num: "02", title: "Rebuild", desc: "No more copy-pasting. Write solutions in the interactive sandbox until your logic is bulletproof." },
+    { num: "03", title: "Survive", desc: "Face high-pressure mock interviews that dynamically adapt to your answers in real-time." },
+    { num: "04", title: "Conquer", desc: "Walk into your next technical interview over-prepared and ready to negotiate." }
+  ];
+
+  return (
+    <section className="py-16 md:py-24 bg-surface-50 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto text-center">
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-surface-950 mb-12 md:mb-16">The complete pipeline to your next role</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 relative">
+          <div className="hidden lg:block absolute top-10 left-24 right-24 h-0.5 bg-surface-200 z-0"></div>
+          
+          {/* Mobile vertical line connecting steps */}
+          <div className="block lg:hidden absolute top-10 bottom-10 left-1/2 -translate-x-1/2 w-0.5 bg-surface-200 z-0 sm:hidden"></div>
+
+          {steps.map((step, idx) => (
+            <div key={idx} className="relative z-10 flex flex-col items-center">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-white border-4 border-surface-50 shadow-xl rounded-full flex items-center justify-center text-xl sm:text-2xl font-black text-brand-600 mb-4 sm:mb-6">
+                {step.num}
+              </div>
+              <h3 className="text-lg sm:text-xl font-bold text-surface-900 mb-2 sm:mb-3 bg-surface-50 px-2">{step.title}</h3>
+              <p className="text-sm sm:text-base text-surface-600 font-medium text-center max-w-xs">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TestimonialSection() {
+  return (
+    <section className="py-16 md:py-24 bg-white px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-surface-950 tracking-tight mb-4">
+            Engineers love <span className="text-brand-600">dobit.ai</span>
+          </h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          {[
+            { quote: "Having the AI run locally means I can bounce highly experimental RAG architectures off it without any data privacy concerns. It's the ultimate sparring partner.", author: "Alex T.", role: "Independent AI Researcher" },
+            { quote: "I was failing every system design round because my knowledge was purely theoretical. The interactive sandbox forced me to actually implement the joins and caching layers. It got me the offer.", author: "Sam D.", role: "SDE 1" },
+            { quote: "Standard courses hold your hand too much. dobit.ai acts like a strict tech lead who refuses to approve your PR until your code is actually optimized.", author: "Jordan K.", role: "Fullstack Dev" }
+          ].map((t, i) => (
+            <div key={i} className="bg-surface-50 p-6 sm:p-8 rounded-2xl border border-surface-200 relative flex flex-col justify-between">
+              <div>
+                <Quote className="absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 sm:w-12 sm:h-12 text-surface-200 rotate-180" />
+                <div className="flex gap-1 mb-4 sm:mb-6">
+                  {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 sm:w-5 sm:h-5 fill-warning-400 text-warning-400" />)}
+                </div>
+                <p className="text-surface-700 font-medium text-sm sm:text-base lg:text-lg leading-relaxed mb-6 sm:mb-8 relative z-10">"{t.quote}"</p>
+              </div>
+              <div className="flex items-center gap-3 sm:gap-4 mt-auto">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-brand-100 rounded-full flex items-center justify-center text-brand-700 font-bold text-base sm:text-lg shrink-0">
+                  {t.author.charAt(0)}
+                </div>
+                <div>
+                  <p className="font-bold text-surface-900 text-sm sm:text-base">{t.author}</p>
+                  <p className="text-xs sm:text-sm text-surface-500 font-medium">{t.role}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BottomCTASection() {
+  return (
+    <section className="py-12 md:py-20 px-4 sm:px-6 bg-white">
+      <div className="max-w-5xl mx-auto bg-brand-600 rounded-[2rem] sm:rounded-[2.5rem] p-8 sm:p-10 md:p-16 text-center shadow-2xl shadow-brand-500/20 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 sm:w-96 sm:h-96 bg-brand-500 rounded-full blur-[60px] sm:blur-[80px] -translate-y-1/2 translate-x-1/2 opacity-50 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 sm:w-96 sm:h-96 bg-brand-800 rounded-full blur-[60px] sm:blur-[80px] translate-y-1/2 -translate-x-1/2 opacity-50 pointer-events-none"></div>
+        
+        <div className="relative z-10">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-4 sm:mb-6 tracking-tight">
+            Ready to accelerate your career?
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl text-brand-100 font-medium mb-8 sm:mb-10 max-w-2xl mx-auto">
+            Join the next generation of engineers building the future. Start learning, practicing, and interviewing locally today.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 w-full sm:w-auto">
+            <Link href="/signup" className="bg-white text-brand-700 hover:bg-surface-50 px-8 sm:px-10 py-4 sm:py-4.5 rounded-full text-base sm:text-lg font-black transition-all shadow-xl hover:scale-105 w-full sm:w-auto">
+              Create Free Account
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
