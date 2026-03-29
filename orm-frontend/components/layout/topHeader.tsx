@@ -1,13 +1,15 @@
 import React from 'react';
+import { useState } from 'react';
 import { 
-  ArrowRight, BrainCircuit, BookOpenText, 
-  MessagesSquare, Laptop, BriefcaseBusiness, Sparkles, Star,
-  CheckCircle2, Code2, Database, Network, Quote, ShieldCheck, ChevronRight, User, Menu, X
+  ArrowRight, BrainCircuit, Menu, X
 } from 'lucide-react';
-import NavLink from '../ui/navLink';
+import {NavLink, MobileNavLink} from '../ui/navLink';
+import Link from 'next/link';
 
 
-export default function TopHeader({ onOpenPrimary, onOpenSecondary }: { onOpenPrimary: () => void, onOpenSecondary: () => void }) {
+export default function TopHeader() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">

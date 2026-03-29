@@ -1,142 +1,25 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { 
-  ArrowRight, BrainCircuit, BookOpenText, 
-  MessagesSquare, Laptop, BriefcaseBusiness, Sparkles, Star,
-  CheckCircle2, Code2, Database, Network, Quote, ShieldCheck, ChevronRight, User, Menu, X
+  ArrowRight, BrainCircuit, BookOpenText, Laptop, BriefcaseBusiness, Sparkles, Star,
+  CheckCircle2, Code2, Database, Network, Quote, ShieldCheck, ChevronRight, User
 } from 'lucide-react';
 
 import TopHeader from '@/components/layout/topHeader';
-import NavLink from '@/components/ui/navLink';
+import HeroSection from '@/components/blocks/heroSection';
 
 export default function LandingPage() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-surface-800 font-sans overflow-x-hidden">
-
-      
+    
       {/* 1. TOP HEADER / NAVIGATION */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-          
-          <Link href="/" className="flex items-center gap-2 group z-50">
-            <div className="bg-brand-600 p-2 sm:p-2.5 rounded-xl text-white shadow-lg shadow-brand-500/30">
-              <BrainCircuit className="w-5 h-5 sm:w-6 sm:h-6" />
-            </div>
-            <span className="text-2xl sm:text-3xl font-black text-surface-950 tracking-tighter">
-              dobit<span className="text-brand-600">.ai</span>
-            </span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-2">
-            <NavLink href='/'>Home</NavLink>
-            <NavLink href="/courses">Courses</NavLink>
-            <NavLink href="/interview">Interview Prep</NavLink>
-            <NavLink href="/blog">Blog</NavLink>
-            <NavLink href="/jobs">Jobs Board</NavLink>
-          </div>
-
-          {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">
-              Login
-            </Link>
-            <Link href="/signup" className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 group">
-              Start Free <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button 
-            className="md:hidden p-2 text-surface-600 hover:bg-surface-100 rounded-lg z-50"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        <div className={`md:hidden absolute top-20 left-0 w-full bg-white border-b border-surface-200 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="flex flex-col p-4 gap-2">
-            <MobileNavLink href="/courses" onClick={() => setIsMobileMenuOpen(false)}>Courses</MobileNavLink>
-            <MobileNavLink href="/interview" onClick={() => setIsMobileMenuOpen(false)}>Interview Prep</MobileNavLink>
-            <MobileNavLink href="/blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</MobileNavLink>
-            <MobileNavLink href="/jobs" onClick={() => setIsMobileMenuOpen(false)}>Jobs Board</MobileNavLink>
-            <div className="h-px w-full bg-surface-200 my-2"></div>
-            <div className="flex flex-col gap-3 pt-2">
-              <Link href="/login" className="text-center w-full py-3 text-sm font-semibold text-surface-700 bg-surface-50 rounded-xl">
-                Login
-              </Link>
-              <Link href="/signup" className="flex justify-center items-center gap-2 w-full bg-brand-600 text-white py-3 rounded-xl font-bold shadow-md">
-                Start Learning Free
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <TopHeader></TopHeader>
 
       {/* 2. HERO SECTION */}
-      <main className="pt-28 md:pt-40 pb-20 px-6 overflow-hidden">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-12 gap-12 items-center">
-          
-          {/* Left Text Content */}
-          <div className="md:col-span-6 text-center md:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-brand-50 text-brand-700 text-sm font-semibold rounded-full mb-6 border border-brand-200">
-              <Sparkles className="w-4 h-4 text-warning-400" />
-              AI-Powered Career Accelerator
-            </div>
-            <h1 className="text-5xl lg:text-7xl font-extrabold text-surface-950 leading-[0.95] tracking-tighter mb-6">
-              Learn<span className="text-brand-600">.</span> Prepare<span className="text-brand-600">.</span> Get Hired<span className="text-brand-600">.</span>
-            </h1>
-            <p className="text-xl text-surface-600 mb-10 leading-relaxed font-medium">
-                Watching videos won't get you hired. <strong className="text-brand-700">dobit.ai</strong> is your private, local coding companion that forces you to build, critiques designs in real-time, and simulates technical rounds.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
-              <Link href="/courses" className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-10 py-4.5 rounded-full text-lg font-black transition-all shadow-xl shadow-brand-500/30 active:scale-95 group">
-                Explore Courses <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link href="/interview" className="flex items-center gap-2 bg-white hover:bg-surface-100 text-brand-700 px-8 py-4.5 rounded-full text-lg font-bold transition-colors border-2 border-brand-100">
-                <Laptop className="w-5 h-5" /> Start Mock Interview
-              </Link>
-            </div>
-          </div>
-
-          {/* Right Visual "Abstract Coding/AI" Graphic */}
-          <div className="md:col-span-6 relative flex justify-center items-center mt-12 md:mt-0">
-            {/* The primary graphic "Code Sandbox" window */}
-            <div className="w-[450px] h-[350px] bg-surface-950 rounded-2xl shadow-2xl p-6 border-4 border-white relative z-10 rotate-[-2deg] scale-100 lg:scale-110">
-              <div className="flex gap-2.5 mb-5 border-b border-surface-800 pb-4">
-                <div className="w-3.5 h-3.5 rounded-full bg-error-500"></div>
-                <div className="w-3.5 h-3.5 rounded-full bg-warning-400"></div>
-                <div className="w-3.5 h-3.5 rounded-full bg-success-500"></div>
-                <span className="text-surface-600 font-mono text-xs ml-auto">dobit_ai_sandbox.py</span>
-              </div>
-              <div className="text-[#a78bfa] font-mono text-sm leading-relaxed">
-                <p># AI Interview Simulation</p>
-                <p className="text-surface-400">@dobit.ai/engine</p>
-                <p>db_query = User.query.include(posts)</p>
-                <p className="text-success-400">✓ Optimization found</p>
-                <p>result = "Joins implemented."</p>
-              </div>
-            </div>
-            {/* Floating context cards */}
-            <div className="absolute -top-12 -right-8 bg-warning-400 text-white p-4 rounded-xl shadow-xl z-20 rotate-[10deg] flex items-center gap-3">
-              <Star className="w-8 h-8 fill-white" />
-              <div className="text-right">
-                <p className="text-2xl font-black">9.8</p>
-                <p className="text-xs font-bold">Offer Rate</p>
-              </div>
-            </div>
-            <div className="absolute -bottom-10 -left-10 bg-brand-100 p-3 rounded-2xl shadow-xl z-0 border-2 border-white">
-              <MessagesSquare className="w-20 h-20 text-brand-600 opacity-50" />
-            </div>
-          </div>
-        </div>
-      </main>
+      <HeroSection/>
 
       {/* 3. TRUSTED BY SECTION */}
       <TrustedBySection />
@@ -149,7 +32,7 @@ export default function LandingPage() {
               Your Entire Career Path, <br className="hidden sm:block"/><span className="text-brand-600">Elevated by AI.</span>
             </h2>
             <p className="text-base sm:text-lg text-surface-600 font-medium leading-relaxed">
-              We've consolidated the critical pillars of career growth into one powerful platform, using AI to personalize your experience locally.
+              We&apos;ve consolidated the critical pillars of career growth into one powerful platform, using AI to personalize your experience locally.
             </p>
           </div>
 
@@ -201,14 +84,6 @@ export default function LandingPage() {
 }
 
 // --- HELPER COMPONENTS ---
-
-function MobileNavLink({ href, onClick, children }: { href: string, onClick: () => void, children: React.ReactNode }) {
-  return (
-    <Link href={href} onClick={onClick} className="px-4 py-3 rounded-xl text-base font-semibold text-surface-800 hover:text-brand-700 hover:bg-brand-50 transition-all w-full">
-      {children}
-    </Link>
-  );
-}
 
 function FeatureCard({ icon, title, desc, link, highlight=false }: { icon: React.ReactNode, title: string, desc: string, link: string, highlight?: boolean }) {
   return (
