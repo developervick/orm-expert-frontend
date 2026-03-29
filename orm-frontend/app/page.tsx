@@ -157,7 +157,7 @@ function RoadmapsSection() {
               Curated <span className="text-brand-600">Learning Paths</span>
             </h2>
             <p className="text-base sm:text-lg text-surface-600 font-medium leading-relaxed">
-              Don't guess what to learn next. Follow structured, industry-aligned roadmaps designed to take you from fundamentals to advanced engineering.
+              Don&apos;t guess what to learn next. Follow structured, industry-aligned roadmaps designed to take you from fundamentals to advanced engineering.
             </p>
           </div>
           <Link href="/courses" className="hidden lg:flex items-center gap-2 text-brand-600 font-bold hover:text-brand-700 transition-colors">
@@ -234,7 +234,7 @@ function AIDeepDiveSection() {
             A Senior Engineer, living right on your local machine.
           </h2>
           <p className="text-base sm:text-lg text-surface-300 font-medium leading-relaxed mb-8">
-            Forget waiting on cloud APIs or worrying about your code being used as training data. The dobit.ai engine runs entirely on your local environment. It's an independent technical consultant that securely reviews your proprietary code, catches N+1 query bottlenecks, and pushes you to write cleaner architecture.
+            Forget waiting on cloud APIs or worrying about your code being used as training data. The dobit.ai engine runs entirely on your local environment. It&apos;s an independent technical consultant that securely reviews your proprietary code, catches N+1 query bottlenecks, and pushes you to write cleaner architecture.
           </p>
           <ul className="space-y-3 sm:space-y-4 text-left inline-block lg:block">
             {['Private context-aware code reviews', 'System design critiques', 'Real-time mock interview feedback'].map((item, i) => (
@@ -303,7 +303,7 @@ function TestimonialSection() {
                 <div className="flex gap-1 mb-4 sm:mb-6">
                   {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 sm:w-5 sm:h-5 fill-warning-400 text-warning-400" />)}
                 </div>
-                <p className="text-surface-700 font-medium text-sm sm:text-base lg:text-lg leading-relaxed mb-6 sm:mb-8 relative z-10">"{t.quote}"</p>
+                <p className="text-surface-700 font-medium text-sm sm:text-base lg:text-lg leading-relaxed mb-6 sm:mb-8 relative z-10">&quot;{t.quote}&quot;</p>
               </div>
               <div className="flex items-center gap-3 sm:gap-4 mt-auto">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 bg-brand-100 rounded-full flex items-center justify-center text-brand-700 font-bold text-base sm:text-lg shrink-0">
