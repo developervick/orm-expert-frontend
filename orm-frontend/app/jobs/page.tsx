@@ -107,7 +107,7 @@ export default function JobsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-surface-50 text-surface-800 font-sans">
+    <div className="min-h-screen bg-surface-50 text-surface-800 font-sans scroll-smooth">
       
       {/* 1. PUBLIC NAVBAR */}
       <TopHeader/>
@@ -271,16 +271,16 @@ function JobCard({ job }: { job: any }) {
         </div>
 
         {/* Job Details */}
-        <div className="flex-1">
+        <div id={job.id} className="flex-1 scroll-mt-64">
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-3">
-            <div>
+            <Link className='hover:cursor-pointer' href={`/jobs/${job.id}`}>
               <h3 className="text-xl font-bold text-surface-950 mb-1 group-hover:text-brand-700 transition-colors">
                 {job.title}
               </h3>
               <div className="flex items-center gap-2 text-surface-600 font-medium text-sm">
                 <Building2 className="w-4 h-4" /> {job.company}
               </div>
-            </div>
+            </Link>
             
             {/* AI Match Score UI */}
             <div className="flex items-center gap-2 bg-success-50 border border-success-200 px-3 py-1.5 rounded-lg shrink-0 w-fit">
