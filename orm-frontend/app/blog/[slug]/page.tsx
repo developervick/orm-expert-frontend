@@ -7,6 +7,8 @@ import {
   Calendar, Share2, Bookmark, Network, Terminal,
   CheckCircle2, Copy, ArrowRight
 } from 'lucide-react';
+import TopHeader from '@/components/layout/topHeader';
+import FooterSection from '@/components/blocks/footer';
 
 export default function BlogPost() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,46 +23,7 @@ export default function BlogPost() {
     <div className="min-h-screen bg-white text-surface-800 font-sans selection:bg-brand-200 selection:text-brand-900">
       
       {/* 1. PUBLIC NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group z-50">
-            <div className="bg-brand-600 p-2 sm:p-2.5 rounded-xl text-white shadow-lg shadow-brand-500/30">
-              <BrainCircuit className="w-5 h-5 sm:w-6 sm:h-6" />
-            </div>
-            <span className="text-2xl sm:text-3xl font-black text-surface-950 tracking-tighter">
-              dobit<span className="text-brand-600">.ai</span>
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-2">
-            <NavLink href="/courses">Courses</NavLink>
-            <NavLink href="/interview">Interview Prep</NavLink>
-            <NavLink href="/blog" active>Blog</NavLink>
-            <NavLink href="/jobs">Jobs Board</NavLink>
-          </div>
-
-          <div className="hidden md:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">Login</Link>
-            <Link href="/signup" className="bg-surface-900 hover:bg-surface-800 text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-md active:scale-95">Sign Up</Link>
-          </div>
-
-          <button className="md:hidden p-2 text-surface-600 hover:bg-surface-100 rounded-lg z-50" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        <div className={`md:hidden absolute top-20 left-0 w-full bg-white border-b border-surface-200 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="flex flex-col p-4 gap-2">
-            <MobileNavLink href="/courses">Courses</MobileNavLink>
-            <MobileNavLink href="/interview">Interview Prep</MobileNavLink>
-            <MobileNavLink href="/blog">Blog</MobileNavLink>
-            <MobileNavLink href="/jobs">Jobs Board</MobileNavLink>
-            <div className="h-px w-full bg-surface-200 my-2"></div>
-            <Link href="/login" className="text-center w-full py-3 text-sm font-semibold text-surface-700 bg-surface-50 rounded-xl">Login</Link>
-          </div>
-        </div>
-      </nav>
+      <TopHeader/>
 
       {/* 2. ARTICLE HEADER */}
       <header className="pt-32 pb-12 px-4 sm:px-6 bg-surface-50 border-b border-surface-200">
@@ -165,25 +128,25 @@ export default function BlogPost() {
               </div>
               <div className="p-6 overflow-x-auto text-sm sm:text-base font-mono leading-relaxed">
                 <pre className="text-surface-300">
-<span className="text-surface-500">-- KEYS[1]: User specific rate limit key</span><br/>
-<span className="text-surface-500">-- ARGV[1]: Token refill rate</span><br/>
-<span className="text-surface-500">-- ARGV[2]: Maximum bucket capacity</span><br/>
-<span className="text-surface-500">-- ARGV[3]: Current timestamp</span><br/>
-<br/>
-<span className="text-brand-400">local</span> tokens_key = KEYS[<span className="text-warning-300">1</span>] .. <span className="text-success-300">":tokens"</span><br/>
-<span className="text-brand-400">local</span> timestamp_key = KEYS[<span className="text-warning-300">1</span>] .. <span className="text-success-300">":ts"</span><br/>
-<br/>
-<span className="text-brand-400">local</span> rate = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">1</span>])<br/>
-<span className="text-brand-400">local</span> capacity = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">2</span>])<br/>
-<span className="text-brand-400">local</span> now = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">3</span>])<br/>
-<br/>
-<span className="text-brand-400">local</span> last_tokens = <span className="text-info-300">tonumber</span>(redis.call(<span className="text-success-300">"get"</span>, tokens_key))<br/>
-<span className="text-brand-400">if</span> last_tokens == <span className="text-brand-400">nil</span> <span className="text-brand-400">then</span><br/>
-&nbsp;&nbsp;last_tokens = capacity<br/>
-<span className="text-brand-400">end</span><br/>
-<br/>
-<span className="text-surface-500">-- Calculate refilled tokens based on time elapsed...</span><br/>
-<span className="text-brand-400">return</span> allowed
+                  <span className="text-surface-500">-- KEYS[1]: User specific rate limit key</span><br/>
+                  <span className="text-surface-500">-- ARGV[1]: Token refill rate</span><br/>
+                  <span className="text-surface-500">-- ARGV[2]: Maximum bucket capacity</span><br/>
+                  <span className="text-surface-500">-- ARGV[3]: Current timestamp</span><br/>
+                  <br/>
+                  <span className="text-brand-400">local</span> tokens_key = KEYS[<span className="text-warning-300">1</span>] .. <span className="text-success-300">":tokens"</span><br/>
+                  <span className="text-brand-400">local</span> timestamp_key = KEYS[<span className="text-warning-300">1</span>] .. <span className="text-success-300">":ts"</span><br/>
+                  <br/>
+                  <span className="text-brand-400">local</span> rate = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">1</span>])<br/>
+                  <span className="text-brand-400">local</span> capacity = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">2</span>])<br/>
+                  <span className="text-brand-400">local</span> now = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">3</span>])<br/>
+                  <br/>
+                  <span className="text-brand-400">local</span> last_tokens = <span className="text-info-300">tonumber</span>(redis.call(<span className="text-success-300">"get"</span>, tokens_key))<br/>
+                  <span className="text-brand-400">if</span> last_tokens == <span className="text-brand-400">nil</span> <span className="text-brand-400">then</span><br/>
+                  &nbsp;&nbsp;last_tokens = capacity<br/>
+                  <span className="text-brand-400">end</span><br/>
+                  <br/>
+                  <span className="text-surface-500">-- Calculate refilled tokens based on time elapsed...</span><br/>
+                  <span className="text-brand-400">return</span> allowed
                 </pre>
               </div>
             </div>
@@ -231,40 +194,8 @@ export default function BlogPost() {
       </section>
 
       {/* 5. FOOTER */}
-      <footer className="py-12 bg-surface-50 text-surface-500 px-4 sm:px-6 border-t border-surface-200">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="bg-brand-600 p-2 rounded-xl text-white">
-              <BrainCircuit className="w-5 h-5" />
-            </div>
-            <span className="text-2xl font-black text-surface-900 tracking-tighter">
-              dobit<span className="text-brand-600">.ai</span>
-            </span>
-          </Link>
-          <p className="text-sm font-medium">© 2026 Dobit Technologies. All rights reserved.</p>
-        </div>
-      </footer>
+      <FooterSection/>
 
     </div>
-  );
-}
-
-// --- HELPER COMPONENTS ---
-
-function NavLink({ href, active=false, children }: { href: string, active?: boolean, children: React.ReactNode }) {
-  return (
-    <Link href={href} className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-      active ? 'bg-brand-50 text-brand-700' : 'text-surface-800 hover:text-brand-700 hover:bg-brand-50'
-    }`}>
-      {children}
-    </Link>
-  );
-}
-
-function MobileNavLink({ href, children }: { href: string, children: React.ReactNode }) {
-  return (
-    <Link href={href} className="px-4 py-3 rounded-xl text-base font-semibold text-surface-800 hover:text-brand-700 hover:bg-brand-50 transition-all w-full">
-      {children}
-    </Link>
   );
 }

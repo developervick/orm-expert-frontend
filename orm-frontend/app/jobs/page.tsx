@@ -7,6 +7,8 @@ import {
   Building2, Sparkles, CheckCircle2, Menu, X, 
   Briefcase, ArrowRight, Clock, Zap
 } from 'lucide-react';
+import TopHeader from '@/components/layout/topHeader';
+import FooterSection from '@/components/blocks/footer';
 
 // --- MOCK JOB DATA ---
 const jobsCatalog = [
@@ -84,7 +86,6 @@ export default function JobsPage() {
   const [activeType, setActiveType] = useState("All Roles");
   const [activeLocation, setActiveLocation] = useState("Anywhere");
   const [searchQuery, setSearchQuery] = useState("");
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Filter Logic
   const filteredJobs = jobsCatalog.filter(job => {
@@ -109,53 +110,7 @@ export default function JobsPage() {
     <div className="min-h-screen bg-surface-50 text-surface-800 font-sans">
       
       {/* 1. PUBLIC NAVBAR */}
-      <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group z-50">
-            <div className="bg-brand-600 p-2 sm:p-2.5 rounded-xl text-white shadow-lg shadow-brand-500/30">
-              <BrainCircuit className="w-5 h-5 sm:w-6 sm:h-6" />
-            </div>
-            <span className="text-2xl sm:text-3xl font-black text-surface-950 tracking-tighter">
-              dobit<span className="text-brand-600">.ai</span>
-            </span>
-          </Link>
-
-          <div className="hidden md:flex items-center gap-2">
-            <NavLink href="/courses">Courses</NavLink>
-            <NavLink href="/interview">Interview Prep</NavLink>
-            <NavLink href="/blog">Blog</NavLink>
-            <NavLink href="/jobs" active>Jobs Board</NavLink>
-          </div>
-
-          <div className="hidden md:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">
-              Login
-            </Link>
-            <Link href="/signup" className="bg-surface-900 hover:bg-surface-800 text-white px-5 py-2.5 rounded-full text-sm font-bold transition-all shadow-md active:scale-95">
-              Sign Up
-            </Link>
-          </div>
-
-          <button 
-            className="md:hidden p-2 text-surface-600 hover:bg-surface-100 rounded-lg z-50"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
-        </div>
-
-        {/* Mobile Menu Dropdown */}
-        <div className={`md:hidden absolute top-20 left-0 w-full bg-white border-b border-surface-200 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="flex flex-col p-4 gap-2">
-            <MobileNavLink href="/courses">Courses</MobileNavLink>
-            <MobileNavLink href="/interview">Interview Prep</MobileNavLink>
-            <MobileNavLink href="/blog">Blog</MobileNavLink>
-            <MobileNavLink href="/jobs">Jobs Board</MobileNavLink>
-            <div className="h-px w-full bg-surface-200 my-2"></div>
-            <Link href="/login" className="text-center w-full py-3 text-sm font-semibold text-surface-700 bg-surface-50 rounded-xl">Login</Link>
-          </div>
-        </div>
-      </nav>
+      <TopHeader/>
 
       {/* 2. PAGE HEADER / AI HOOK */}
       <header className="pt-32 pb-12 px-4 sm:px-6 bg-white border-b border-surface-200">
@@ -180,7 +135,7 @@ export default function JobsPage() {
               <div className="bg-brand-600 p-2 rounded-lg">
                 <BrainCircuit className="w-5 h-5 text-white" />
               </div>
-              <h3 className="font-bold text-lg">AI Match Profile</h3>
+              <h3 className="font-bold text-lg text-white">AI Match Profile</h3>
             </div>
             <p className="text-surface-300 text-sm font-medium mb-6 leading-relaxed">
               Create a free account to unlock your personalized Match Score based on your technical abilities.
@@ -288,6 +243,8 @@ export default function JobsPage() {
 
         </div>
       </main>
+      {/* Footer */}
+      <FooterSection/>
 
     </div>
   );
