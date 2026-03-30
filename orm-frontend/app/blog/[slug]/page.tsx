@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
-  BrainCircuit, Menu, X, ArrowLeft, Clock, 
+  ArrowLeft, Clock, 
   Calendar, Share2, Bookmark, Network, Terminal,
   CheckCircle2, Copy, ArrowRight
 } from 'lucide-react';
@@ -11,7 +11,6 @@ import TopHeader from '@/components/layout/topHeader';
 import FooterSection from '@/components/blocks/footer';
 
 export default function BlogPost() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -91,7 +90,7 @@ export default function BlogPost() {
               <li>If the value exceeds the limit, return HTTP 429 (Too Many Requests).</li>
             </ul>
             <p className="text-lg text-surface-700 leading-relaxed mb-8">
-              <strong className="text-surface-900">The problem? State isn't shared.</strong> If you have 50 load-balanced application servers, a user could hit your API 50 times their limit simply by being routed to different instances. You need a centralized data store.
+              <strong className="text-surface-900">The problem? State isn&apos;t shared.</strong> If you have 50 load-balanced application servers, a user could hit your API 50 times their limit simply by being routed to different instances. You need a centralized data store.
             </p>
 
             {/* Insight Block */}
@@ -133,14 +132,14 @@ export default function BlogPost() {
                   <span className="text-surface-500">-- ARGV[2]: Maximum bucket capacity</span><br/>
                   <span className="text-surface-500">-- ARGV[3]: Current timestamp</span><br/>
                   <br/>
-                  <span className="text-brand-400">local</span> tokens_key = KEYS[<span className="text-warning-300">1</span>] .. <span className="text-success-300">":tokens"</span><br/>
-                  <span className="text-brand-400">local</span> timestamp_key = KEYS[<span className="text-warning-300">1</span>] .. <span className="text-success-300">":ts"</span><br/>
+                  <span className="text-brand-400">local</span> tokens_key = KEYS[<span className="text-warning-300">1</span>] .. <span className="text-success-300">&quot;:tokens&quot;</span><br/>
+                  <span className="text-brand-400">local</span> timestamp_key = KEYS[<span className="text-warning-300">1</span>] .. <span className="text-success-300">&quot;:ts&quot;</span><br/>
                   <br/>
                   <span className="text-brand-400">local</span> rate = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">1</span>])<br/>
                   <span className="text-brand-400">local</span> capacity = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">2</span>])<br/>
                   <span className="text-brand-400">local</span> now = <span className="text-info-300">tonumber</span>(ARGV[<span className="text-warning-300">3</span>])<br/>
                   <br/>
-                  <span className="text-brand-400">local</span> last_tokens = <span className="text-info-300">tonumber</span>(redis.call(<span className="text-success-300">"get"</span>, tokens_key))<br/>
+                  <span className="text-brand-400">local</span> last_tokens = <span className="text-info-300">tonumber</span>(redis.call(<span className="text-success-300">&quot;get&quot;</span>, tokens_key))<br/>
                   <span className="text-brand-400">if</span> last_tokens == <span className="text-brand-400">nil</span> <span className="text-brand-400">then</span><br/>
                   &nbsp;&nbsp;last_tokens = capacity<br/>
                   <span className="text-brand-400">end</span><br/>
@@ -151,12 +150,12 @@ export default function BlogPost() {
               </div>
             </div>
 
-            <h2 className="text-3xl font-extrabold text-surface-950 mt-12 mb-6 tracking-tight">Handling the "Thundering Herd"</h2>
+            <h2 className="text-3xl font-extrabold text-surface-950 mt-12 mb-6 tracking-tight">Handling the &quot;Thundering Herd&quot;</h2>
             <p className="text-lg text-surface-700 leading-relaxed mb-6">
               When a rate limit resets (e.g., at the top of the minute), millions of queued requests might hit your server simultaneously. This is the Thundering Herd problem. 
             </p>
             <p className="text-lg text-surface-700 leading-relaxed mb-10">
-              To mitigate this, avoid exact resetting timestamps. Add a few milliseconds of random "jitter" to the TTL (Time To Live) of your Redis keys so they expire slightly out of sync.
+              To mitigate this, avoid exact resetting timestamps. Add a few milliseconds of random &quot;jitter&quot; to the TTL (Time To Live) of your Redis keys so they expire slightly out of sync.
             </p>
 
           </article>

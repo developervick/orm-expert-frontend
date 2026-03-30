@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
-  BrainCircuit, Menu, X, ArrowRight, Terminal, 
+  BrainCircuit, ArrowRight, Terminal, 
   Mic, Video, Settings, Play, Code2, Network, 
   Cpu, Activity, CheckCircle2, ShieldAlert, Timer
 } from 'lucide-react';
@@ -149,7 +149,7 @@ export default function InterviewPage() {
                 {/* AI Overlay pointing out mistake */}
                 <div className="absolute top-32 right-8 bg-error-500/10 border border-error-500/30 text-error-200 p-3 rounded-xl text-xs max-w-[250px] backdrop-blur-md font-sans font-medium shadow-2xl">
                   <div className="flex items-center gap-2 mb-1 text-error-400 font-bold"><Activity className="w-4 h-4"/> Architecture Alert</div>
-                  A single Postgres instance won't handle 10k writes/sec. Consider database sharding or a NoSQL store for the short-links.
+                  A single Postgres instance won&apos;t handle 10k writes/sec. Consider database sharding or a NoSQL store for the short-links.
                 </div>
               </div>
             </div>
@@ -174,13 +174,13 @@ export default function InterviewPage() {
               {/* Real-time Transcription/Chat */}
               <div className="flex-1 p-4 flex flex-col gap-4 overflow-y-auto">
                 <div className="bg-brand-900/30 border border-brand-500/20 p-3 rounded-xl rounded-tl-none text-sm text-surface-200 font-medium">
-                  "I see you've initialized a standard PostgreSQL database. How are you planning to handle collision detection when generating the 7-character short links at massive scale?"
+                  &quot;I see you&apos;ve initialized a standard PostgreSQL database. How are you planning to handle collision detection when generating the 7-character short links at massive scale?&quot;
                 </div>
                 <div className="bg-surface-800 border border-surface-700 p-3 rounded-xl rounded-tr-none text-sm text-surface-300 self-end max-w-[90%]">
-                  "I was thinking of using a Base62 encoding on a unique auto-incrementing ID..."
+                  &quot;I was thinking of using a Base62 encoding on a unique auto-incrementing ID...&quot;
                 </div>
                 <div className="bg-brand-900/30 border border-brand-500/20 p-3 rounded-xl rounded-tl-none text-sm text-surface-200 font-medium">
-                  "That works for a single machine. But how do you generate unique IDs across a distributed cluster without a single point of failure?"
+                  &quot;That works for a single machine. But how do you generate unique IDs across a distributed cluster without a single point of failure?&quot;
                 </div>
               </div>
             </div>
