@@ -154,7 +154,7 @@ export default function LoginPage() {
         <div className="relative z-10 max-w-lg">
           <Quote className="w-12 h-12 text-brand-500/50 mb-6 rotate-180" />
           <h2 className="text-3xl xl:text-4xl font-extrabold text-white leading-tight tracking-tight mb-8">
-            "The interactive local sandbox is a game-changer. It caught an N+1 query vulnerability in my code that I would have completely missed in a real interview.&quot;
+            &quot;The interactive local sandbox is a game-changer. It caught an N+1 query vulnerability in my code that I would have completely missed in a real interview.&quot;
           </h2>
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-brand-600 flex items-center justify-center text-white font-black text-xl border-2 border-brand-400">
