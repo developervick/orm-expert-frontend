@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { 
-  ArrowRight, BrainCircuit, Menu, X
+  ArrowRight, BrainCircuit, LogIn, Menu, X
 } from 'lucide-react';
 import {NavLink, MobileNavLink} from '../ui/navLink';
 import Link from 'next/link';
@@ -41,6 +41,11 @@ export default function TopHeader() {
               Start Free <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
+          <div className="hidden md:flex items-center gap-3">
+            <Link href="/partner/login" className="flex items-center gap-2 text-surface-700 px-6 py-2.5 transition-all group">
+              Partners Logins <LogIn className='w-4 h-4 group-hover:translate-x-1 transition-transform'></LogIn>
+            </Link>
+          </div>
 
           {/* Mobile Menu Toggle */}
           <button 
@@ -52,20 +57,22 @@ export default function TopHeader() {
         </div>
 
         {/* Mobile Dropdown Menu */}
-        <div className={`md:hidden absolute top-20 left-0 w-full bg-white border-b border-surface-200 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className={`md:hidden absolute top-20 left-0 w-full bg-white border-b border-surface-200 shadow-xl transition-all duration-300 overflow-hidden ${isMobileMenuOpen ? 'opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="flex flex-col p-4 gap-2">
             <MobileNavLink href="/courses" onClick={() => setIsMobileMenuOpen(false)}>Courses</MobileNavLink>
             <MobileNavLink href="/interview" onClick={() => setIsMobileMenuOpen(false)}>Interview Prep</MobileNavLink>
             <MobileNavLink href="/blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</MobileNavLink>
             <MobileNavLink href="/jobs" onClick={() => setIsMobileMenuOpen(false)}>Jobs Board</MobileNavLink>
+            <MobileNavLink href="/partner/login" onClick={() => setIsMobileMenuOpen(false)}>Partners Login</MobileNavLink>
             <div className="h-px w-full bg-surface-200 my-2"></div>
             <div className="flex flex-col gap-3 pt-2">
               <Link href="/login" className="text-center w-full py-3 text-sm font-semibold text-surface-700 bg-surface-50 rounded-xl">
-                Login
+                 Login
               </Link>
               <Link href="/signup" className="flex justify-center items-center gap-2 w-full bg-brand-600 text-white py-3 rounded-xl font-bold shadow-md">
                 Start Learning Free
               </Link>
+              
             </div>
           </div>
         </div>

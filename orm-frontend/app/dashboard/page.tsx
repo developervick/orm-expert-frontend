@@ -36,10 +36,7 @@ export default function CourseApp() {
       <PrimarySidebar isOpen={isPrimaryOpen} onClose={() => setIsPrimaryOpen(false)} />
       
       <div className="flex-1 flex flex-col h-screen overflow-hidden w-full">
-        <TopHeader 
-          onOpenPrimary={() => setIsPrimaryOpen(true)} 
-          onOpenSecondary={() => setIsSecondaryOpen(true)} 
-        />
+        <TopHeader/>
 
         <div className="flex flex-1 overflow-hidden relative">
           <CourseSidebar 
