@@ -38,10 +38,11 @@ const apiClient = ky.create({
                     localStorage.setItem('accessToken', refreshed.access_token)
                     request.headers.set('Authorization', `Bearer ${refreshed.access_token}`)
                 }
-                catch(e:any){
+                catch(e: unknown){
                     localStorage.removeItem('access_token')
                     localStorage.removeItem('refresh_token')
                     window.location.href = '/login'
+                    console.log(e)
                 }
             }
         ]

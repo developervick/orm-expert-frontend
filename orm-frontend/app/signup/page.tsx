@@ -5,15 +5,24 @@ import Link from 'next/link';
 import { 
   BrainCircuit, ArrowLeft, Mail, Lock, User as UserIcon, CheckCircle2, ShieldCheck, Terminal, Network
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
+  const [mismatch, setMismatch] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
+    router.push('/signup/verify-otp');
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setMismatch(true);
+      return;
+    }
     if (!agreeTerms) {
       alert("Please agree to the Terms of Service.");
       return;
@@ -130,6 +139,23 @@ export default function SignupPage() {
                   />
                 </div>
                 <p className="text-xs font-semibold text-surface-500 mt-1.5 ml-1">Must be at least 8 characters long.</p>
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-bold text-surface-700">Confirm Password</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Lock className="h-5 w-5 text-surface-400" />
+                  </div>
+                  <input 
+                    type="password" 
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Create a strong password"
+                    className="w-full pl-11 pr-4 py-3 bg-surface-50 border border-surface-200 rounded-xl text-surface-900 font-medium focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all placeholder:text-surface-400"
+                  />
+                </div>
+                <p className="text-xs font-semibold text-red-500 mt-1.5 ml-1">{mismatch ? "Passwords do not match." : ""}</p>
               </div>
 
               <div className="flex items-start gap-3 mt-2">
