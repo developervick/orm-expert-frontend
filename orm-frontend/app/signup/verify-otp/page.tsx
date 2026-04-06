@@ -3,12 +3,18 @@
 import React, { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import Link from 'next/link';
 import { BrainCircuit, ArrowLeft, Mail, RefreshCw, ShieldCheck } from 'lucide-react';
+import { useAuth } from '@/services/authservice';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 export default function VerifyOTPPage() {
   const [otp, setOtp] = useState<string[]>(['', '', '', '']);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [countdown, setCountdown] = useState(30);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const auth = useAuth();
+  const router = useRouter();
 
   // Handle countdown timer for Resend button
   useEffect(() => {
@@ -55,18 +61,25 @@ export default function VerifyOTPPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const code = otp.join('');
-    if (code.length < 6) return;
+    if (code.length < 4) return;
     
     setIsSubmitting(true);
-    // Simulate API Call
-    console.log("Verifying OTP:", code);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      // Route to dashboard here
-    }, 1500);
+    const result = await auth.verifyOTP(code, Cookies.get('verify_uuid') as string)
+    console.log(result, "OTP verification result");
+    if (!result.success) {
+      toast.error(`${result.data?.error || 'OTP verification failed. Please try again.'}`);
+      setIsSubmitting(false)
+      return;
+    } else {
+      // Handle success (e.g., redirect to dashboard)
+      Cookies.remove('verify_uuid');
+      toast.success('OTP verified successfully!');
+      router.push('/');
+    }
+    setIsSubmitting(false);
   };
 
   const handleResend = () => {

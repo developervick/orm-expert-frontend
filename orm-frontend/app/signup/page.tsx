@@ -3,9 +3,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { 
-  BrainCircuit, ArrowLeft, Mail, Lock, User as UserIcon, CheckCircle2, ShieldCheck, Terminal, Network
+  BrainCircuit, ArrowLeft, Mail, Lock, User as UserIcon, CheckCircle2, ShieldCheck, Terminal, Network,
+  RefreshCw
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/services/authservice';
+import { toast } from 'react-toastify';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -15,9 +18,9 @@ export default function SignupPage() {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [mismatch, setMismatch] = useState(false);
   const router = useRouter();
+  const { signup, loading } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    router.push('/signup/verify-otp');
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMismatch(true);
@@ -28,7 +31,12 @@ export default function SignupPage() {
       return;
     }
     // Add your registration logic here
-    console.log("Signing up with:", { name, email, password });
+    const result  = await signup(name, email, password, confirmPassword);
+    if (!result.success) {
+      toast.error("Signup failed. Please try again.");
+      return;
+    }
+    router.push('/signup/verify-otp');
   };
 
   return (
@@ -174,8 +182,8 @@ export default function SignupPage() {
                 </label>
               </div>
 
-              <button type="submit" className="w-full bg-brand-600 hover:bg-brand-500 text-white py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 mt-4">
-                Create Free Account
+              <button disabled={loading} type="submit" className="w-full flex items-center justify-center bg-brand-600 hover:bg-brand-500 text-white py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 mt-4">
+                {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : "Create Account"}
               </button>
             </form>
 
