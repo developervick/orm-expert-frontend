@@ -10,6 +10,8 @@ import { useAuth } from '@/services/authservice';
 export default function TopHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const auth = useAuth();
+
+  console.log('Auth Context:', auth.is_loggedIn);
   
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
@@ -35,10 +37,16 @@ export default function TopHeader() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/login" className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">
-              Login
-            </Link>
-            <Link href="/signup" className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 group">
+            {
+            !auth.is_loggedIn ? (
+              <Link href="/login" className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">
+                Login
+              </Link>
+            ) : <button onClick={auth.logoutAction} className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">
+                Logout
+              </button>
+            }
+            <Link href={auth.is_loggedIn ? "/dashboard" : "/signup"} className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 group">
               Start Free <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>

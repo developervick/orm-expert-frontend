@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, ReactNode} from "react";
+import { createContext, useContext, useState, ReactNode, useEffect} from "react";
 import ky from "ky";
 import Cookies from 'js-cookie';
 import { ApiResponseType } from "@/types/interface";
@@ -7,6 +7,7 @@ import { SignupType } from "@/types/types";
 import { VerifyType, LoginType } from "@/types/api";
 import {HTTPError} from 'ky'
 import { getMinutesFromNow } from "@/lib/utils";
+import { toast } from "react-toastify";
 type AuthContextType = {
     userId: number | null;
     loading: boolean;
@@ -14,6 +15,7 @@ type AuthContextType = {
     email: string | null;
     user: LoginType | null;
     is_loggedIn: boolean;
+    logoutAction: () => void; 
     loginAction: (email: string, password: string) => Promise<{ success: boolean, data?: ApiResponseType<LoginType> | ApiResponseType<unknown>}>;
     setEmail: (email: string) => void;
     signup: (name: string, email: string, password: string, confirmPassword: string) => Promise<{ success: boolean, data?: ApiResponseType<SignupType> | ApiResponseType<unknown>}>;
@@ -32,6 +34,32 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<LoginType | null>(null);
 
 
+    useEffect(()=>{
+        const storedUser = localStorage.getItem('user');
+        const storedUserId = localStorage.getItem('userId');
+        const accessToken = Cookies.get('accessToken');
+        if (storedUser && storedUserId && accessToken) {
+            setUser(JSON.parse(storedUser));
+            setUserId(JSON.parse(storedUserId));
+            setIsLoggedIn(true);
+        } else {
+            setUser(null);
+            setUserId(null);
+            setIsLoggedIn(false);
+        }   
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('userId', JSON.stringify(userId));
+        localStorage.setItem('is_loggedIn', JSON.stringify(is_loggedIn));
+        localStorage.setItem('email', JSON.stringify(email));
+        localStorage.setItem('loading', JSON.stringify(loading));
+        localStorage.setItem('error', JSON.stringify(error));
+        
+    }, [user, userId, is_loggedIn, email, loading, error]);
+
+
     const loginAction = async (email: string, password: string) => {
         setLoading(true);
         setError(null);
@@ -42,7 +70,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             const data = await response.json<ApiResponseType<LoginType>>();
             setUser(data.data);
             setUserId(data.data.userId);
-            Cookies.set('accessToken', data.data.tokens.access, { expires: 30, sameSite: 'strict' });
+            localStorage.setItem('userId', JSON.stringify(data.data.userId));
+            Cookies.set('accessToken', data.data.tokens.access, { expires: 30, sameSite: 'strict'});
             Cookies.set('refreshToken', data.data.tokens.refresh, { expires: 30, sameSite: 'strict' });
             Cookies.set('userId', JSON.stringify(data.data.userId), { expires: 30, sameSite: 'strict' });
             setIsLoggedIn(true);
@@ -84,8 +113,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             });
             const res = await response.json<ApiResponseType<VerifyType>>();
             setUserId(res.data.userId);
-            Cookies.set('accessToken', res.data.tokens.access, { expires: 30, sameSite: 'strict' });
-            Cookies.set('refreshToken', res.data.tokens.refresh, { expires: 30, sameSite: 'strict' });
+            Cookies.set('accessToken', res.data.tokens.access, { expires: 30, sameSite: 'strict', });
+            Cookies.set('refreshToken', res.data.tokens.refresh, { expires: 30, sameSite: 'strict', });
             Cookies.set('userId', JSON.stringify(res.data.userId), { expires: 30, sameSite: 'strict' });
             setIsLoggedIn(true);
             return { success: true, data: res };
@@ -97,6 +126,31 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
+    const logoutAction = async () => {
+        await ky.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1/logout/`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('accessToken')}`
+            },
+            json: {
+                refresh : Cookies.get('refreshToken')
+            }
+        }).then(() => {
+            setUser(null);
+            setUserId(null);
+            setIsLoggedIn(false);
+            Cookies.remove('accessToken');
+            Cookies.remove('refreshToken');
+            Cookies.remove('userId');
+            localStorage.removeItem('user');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('is_loggedIn');
+            localStorage.removeItem('email');
+            toast.success("Logged out successfully");
+        }).catch((error) => {
+            console.error("Logout failed:", error);
+        });
+    };
+
     const value: AuthContextType = {
         userId,
         loading,
@@ -104,6 +158,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         email,
         user,
         is_loggedIn,
+        logoutAction,
         loginAction,
         setEmail,
         signup: signupAction,

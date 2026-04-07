@@ -9,3 +9,4 @@ export function getSecondsFromNow(seconds: number): number {
     const currentSeconds = now.getSeconds();
     return currentSeconds + seconds;
 }
+
