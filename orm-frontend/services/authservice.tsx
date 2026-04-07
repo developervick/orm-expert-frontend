@@ -1,13 +1,17 @@
 "use client";
-import { createContext, useContext, useState, ReactNode, useEffect} from "react";
+import { createContext, useContext, useState, ReactNode, useEffect, useRef} from "react";
 import ky from "ky";
 import Cookies from 'js-cookie';
 import { ApiResponseType } from "@/types/interface";
 import { SignupType } from "@/types/types";
-import { VerifyType, LoginType } from "@/types/api";
+import { VerifyType, LoginType, refreshTokenResponseType } from "@/types/api";
 import {HTTPError} from 'ky'
 import { getMinutesFromNow } from "@/lib/utils";
 import { toast } from "react-toastify";
+import useLocalStorageState from "@/hooks/localstorageHook";
+import { setTokenGetter } from '@/lib/apiClient';
+
+
 type AuthContextType = {
     userId: number | null;
     loading: boolean;
@@ -26,28 +30,47 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [userId, setUserId] = useState<number | null>(null);
-    const [email, setEmail] = useState<string | null>(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<unknown | null>(null);
-    const [is_loggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState<LoginType | null>(null);
+    const [userId, setUserId] = useLocalStorageState<number | null>('userId', null);
+    const [email, setEmail] = useLocalStorageState<string | null>('email', null);
+    const [loading, setLoading] = useLocalStorageState('loading', false);
+    const [error, setError] = useLocalStorageState<unknown | null>('error', null);
+    const [is_loggedIn, setIsLoggedIn] = useLocalStorageState('is_loggedIn', false);
+    const [user, setUser] = useLocalStorageState<LoginType | null>('user', null);
+    const [accessToken, setAccessToken] = useState<string | null>(null);
+    const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
 
 
-    useEffect(()=>{
+    useEffect(() => {
+        const init = async () => {
+            await silentRefresh();  // uses httpOnly cookie automatically
+            setLoading(false);
+        };
+        init();
+
+        return () => {
+            if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+        };
+    }, []);
+
+    useEffect(() => {
+        setTokenGetter(() => accessToken);
+    }, [accessToken]);
+
+    useEffect(() => {
         const storedUser = localStorage.getItem('user');
         const storedUserId = localStorage.getItem('userId');
-        const accessToken = Cookies.get('accessToken');
-        if (storedUser && storedUserId && accessToken) {
-            setUser(JSON.parse(storedUser));
-            setUserId(JSON.parse(storedUserId));
-            setIsLoggedIn(true);
-        } else {
-            setUser(null);
-            setUserId(null);
-            setIsLoggedIn(false);
-        }   
-    }, [])
+        const storedIsLoggedIn = localStorage.getItem('is_loggedIn');
+        const storedEmail = localStorage.getItem('email');
+        const storedLoading = localStorage.getItem('loading');
+        const storedError = localStorage.getItem('error');
+
+        if (storedUser) setUser(JSON.parse(storedUser));
+        if (storedUserId) setUserId(JSON.parse(storedUserId));
+        if (storedIsLoggedIn) setIsLoggedIn(JSON.parse(storedIsLoggedIn));
+        if (storedEmail) setEmail(JSON.parse(storedEmail));
+        if (storedLoading) setLoading(JSON.parse(storedLoading));
+        if (storedError) setError(JSON.parse(storedError));
+    }, []);
 
     useEffect(() => {
         localStorage.setItem('user', JSON.stringify(user));
@@ -59,6 +82,36 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         
     }, [user, userId, is_loggedIn, email, loading, error]);
 
+    const silentRefresh = async (): Promise<string | null> => {
+        try {
+            const res = await ky.post('api/token/refresh/', {
+                prefixUrl: process.env.NEXT_PUBLIC_BACKEND_API,
+                credentials: 'include',
+            }).json<ApiResponseType<refreshTokenResponseType>>();
+            setAccessToken(res.data.access);
+            scheduleRefresh(res.data.access);  // schedule next refresh
+            return res.data.access;
+        } catch {
+            // Refresh token expired or missing — user must log in again
+            setUser(null);
+            setAccessToken(null);
+            return null;
+        }
+    };
+
+    const scheduleRefresh = (token: string) => {
+        // Decode expiry from JWT
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const expiresIn = payload.exp * 1000 - Date.now();
+        const refreshIn = expiresIn - 60 * 1000;  // 1 min before expiry
+
+        // Clear existing timer
+        if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
+
+        refreshTimerRef.current = setTimeout(() => {
+            silentRefresh();
+        }, refreshIn);
+    };
 
     const loginAction = async (email: string, password: string) => {
         setLoading(true);
@@ -71,9 +124,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             setUser(data.data);
             setUserId(data.data.userId);
             localStorage.setItem('userId', JSON.stringify(data.data.userId));
-            Cookies.set('accessToken', data.data.tokens.access, { expires: 30, sameSite: 'strict'});
-            Cookies.set('refreshToken', data.data.tokens.refresh, { expires: 30, sameSite: 'strict' });
             Cookies.set('userId', JSON.stringify(data.data.userId), { expires: 30, sameSite: 'strict' });
+            setAccessToken(data.data.tokens.access);
             setIsLoggedIn(true);
             return { success: true, data: data };
         } catch (error) {
@@ -113,9 +165,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             });
             const res = await response.json<ApiResponseType<VerifyType>>();
             setUserId(res.data.userId);
-            Cookies.set('accessToken', res.data.tokens.access, { expires: 30, sameSite: 'strict', });
-            Cookies.set('refreshToken', res.data.tokens.refresh, { expires: 30, sameSite: 'strict', });
             Cookies.set('userId', JSON.stringify(res.data.userId), { expires: 30, sameSite: 'strict' });
+            setAccessToken(res.data.tokens.access);
             setIsLoggedIn(true);
             return { success: true, data: res };
         } catch (error) {
@@ -127,15 +178,15 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const logoutAction = async () => {
+        if (refreshTimerRef.current) clearTimeout(refreshTimerRef.current);
         await ky.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1/logout/`, {
             headers: {
-                Authorization: `Bearer ${Cookies.get('accessToken')}`
+                Authorization: `Bearer ${accessToken}`
             },
-            json: {
-                refresh : Cookies.get('refreshToken')
-            }
+            credentials: 'include',
         }).then(() => {
             setUser(null);
+            setAccessToken(null);
             setUserId(null);
             setIsLoggedIn(false);
             Cookies.remove('accessToken');

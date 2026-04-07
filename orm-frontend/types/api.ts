@@ -15,3 +15,7 @@ export type LoginType = {
     email: string,
     role: string[]
 }
+
+export type refreshTokenResponseType = {
+    access: string,
+}

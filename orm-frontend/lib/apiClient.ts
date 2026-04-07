@@ -1,8 +1,15 @@
+"use client"
 import ky from 'ky'
-import {getToken, getRefreshToken}  from './getToken'
+import {getRefreshToken}  from './getToken'
 import { ResponsePromise, KyResponse } from 'ky';
 
 let refreshPromise: ResponsePromise | null = null;
+
+let getToken: () => string | null = () => null;
+
+export const setTokenGetter = (fn: () => string | null) => {
+    getToken = fn;
+};
 
 const apiClient = ky.create({
     prefixUrl: process.env.NEXT_PUBLIC_BACKEND_API,
@@ -16,7 +23,7 @@ const apiClient = ky.create({
             (request) => {
                 const token = getToken()
                 if(token){
-                    request.headers.set('Authorization', `Bearer ${getToken()}`)
+                    request.headers.set('Authorization', `Bearer ${token}`)
                 }
             },
         ],
