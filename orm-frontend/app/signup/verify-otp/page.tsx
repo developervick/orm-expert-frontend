@@ -125,7 +125,7 @@ export default function VerifyOTPPage() {
         </h1>
         <p className="text-center text-surface-500 font-medium mb-8 leading-relaxed">
           We sent a 4-digit verification code to <br className="hidden sm:block"/>
-          <strong className="text-surface-900">engineer@company.com</strong>
+          <strong className="text-surface-900">{auth.email}</strong>
         </p>
 
         <form onSubmit={handleSubmit}>

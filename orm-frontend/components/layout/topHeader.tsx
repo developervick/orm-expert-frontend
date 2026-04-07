@@ -1,15 +1,16 @@
-import React from 'react';
 import { useState } from 'react';
 import { 
   ArrowRight, BrainCircuit, LogIn, Menu, X
 } from 'lucide-react';
 import {NavLink, MobileNavLink} from '../ui/navLink';
 import Link from 'next/link';
+import { useAuth } from '@/services/authservice';
 
 
 export default function TopHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const auth = useAuth();
+  
   return (
     <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">

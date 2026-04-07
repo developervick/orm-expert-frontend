@@ -18,7 +18,7 @@ export default function SignupPage() {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [mismatch, setMismatch] = useState(false);
   const router = useRouter();
-  const { signup, loading } = useAuth();
+  const { signup, loading, setEmail: setSignupEmail } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +36,7 @@ export default function SignupPage() {
       toast.error("Signup failed. Please try again.");
       return;
     }
+    setSignupEmail(email);
     router.push('/signup/verify-otp');
   };
 

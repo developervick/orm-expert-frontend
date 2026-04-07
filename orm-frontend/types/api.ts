@@ -5,3 +5,13 @@ export type VerifyType = {
     },
     userId: number
 }
+
+export type LoginType = {
+    tokens : {
+        refresh: string,
+        access: string
+    },
+    userId: number,
+    email: string,
+    role: string[]
+}

@@ -2,16 +2,31 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { BrainCircuit, ArrowLeft, Mail, Lock, Quote, CheckCircle2, Sparkles} from 'lucide-react';
+import { BrainCircuit, ArrowLeft, Mail, Lock, Quote, CheckCircle2, Sparkles, RefreshCw} from 'lucide-react';
+import { useAuth } from '@/services/authservice';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { loginAction } = useAuth();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Add your authentication logic here
-    console.log("Logging in with:", email, password);
+    setLoading(true);
+    const result = await loginAction(email, password);
+    setLoading(false);
+    if (!result.success) {
+      toast.error(result.data?.error || 'Login failed. Please try again.');
+      console.error('Login failed:', result.data);
+    } else {
+      toast.success('Login successful!');
+      router.push('/');
+    }
+  
   };
 
   return (
@@ -121,8 +136,8 @@ export default function LoginPage() {
                 </label>
               </div>
 
-              <button type="submit" className="w-full bg-brand-600 hover:bg-brand-500 text-white py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 mt-4">
-                Sign In
+              <button disabled={loading} type="submit" className="flex justify-center w-full bg-brand-600 hover:bg-brand-500 text-white py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 mt-4">
+                {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : "Log In"}
               </button>
             </form>
 
