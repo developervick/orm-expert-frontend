@@ -53,7 +53,7 @@ export default function SignupPage() {
               <BrainCircuit className="w-5 h-5" />
             </div>
             <span className="text-2xl font-black text-surface-950 tracking-tighter">
-              dobit<span className="text-brand-600">.ai</span>
+              inteleek<span className="text-brand-600">.ai</span>
             </span>
           </Link>
           <Link href="/" className="flex items-center gap-2 text-sm font-bold text-surface-500 hover:text-surface-900 transition-colors">

@@ -170,7 +170,7 @@ export default function CourseOverviewPage() {
               <div>
                 <h3 className="text-xl font-bold text-brand-900 mb-2">Powered by Local AI Execution</h3>
                 <p className="text-brand-700 font-medium leading-relaxed">
-                  This isn&apos;t just a video course. Every module connects to your local <strong>dobit.ai</strong> engine. You will write actual code, configure databases, and receive real-time AI architectural reviews right on your machine.
+                  This isn&apos;t just a video course. Every module connects to your local <strong>inteleek.ai</strong> engine. You will write actual code, configure databases, and receive real-time AI architectural reviews right on your machine.
                 </p>
               </div>
             </section>

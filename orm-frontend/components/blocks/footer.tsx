@@ -12,10 +12,10 @@ export default function FooterSection(){
               <BrainCircuit className="w-5 h-5" />
             </div>
             <span className="text-2xl font-black text-white tracking-tighter">
-              dobit<span className="text-brand-400">.ai</span>
+              inteleek<span className="text-brand-400">.ai</span>
             </span>
           </Link>
-          <p className="text-xs sm:text-sm font-medium">© 2026 Dobit Technologies. All rights reserved.</p>
+          <p className="text-xs sm:text-sm font-medium">© 2026 inteleek Technologies. All rights reserved.</p>
           <div className="flex items-center gap-6 text-sm font-semibold">
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>

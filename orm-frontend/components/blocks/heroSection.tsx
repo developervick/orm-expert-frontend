@@ -19,7 +19,7 @@ export default function HeroSection() {
           </h1>
           <p className="text-lg sm:text-xl text-surface-600 mb-8 lg:mb-10 leading-relaxed font-medium max-w-2xl mx-auto md:mx-0">
             Watching videos won&apos;t get you hired.{" "}
-            <strong className="text-brand-700">dobit.ai</strong> is your
+            <strong className="text-brand-700">inteleek.ai</strong> is your
             private, local coding companion that forces you to build, critiques
             designs in real-time, and simulates technical rounds.
           </p>
@@ -49,12 +49,12 @@ export default function HeroSection() {
               <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-warning-400"></div>
               <div className="w-3 h-3 sm:w-3.5 sm:h-3.5 rounded-full bg-success-500"></div>
               <span className="text-surface-600 font-mono text-[10px] sm:text-xs ml-auto">
-                dobit_ai_sandbox.py
+                inteleek_ai_sandbox.py
               </span>
             </div>
             <div className="text-[#a78bfa] font-mono text-xs sm:text-sm leading-relaxed overflow-x-hidden break-words">
               <p># AI Interview Simulation</p>
-              <p className="text-surface-400 mt-1 sm:mt-0">@dobit.ai/engine</p>
+              <p className="text-surface-400 mt-1 sm:mt-0">@inteleek.ai/engine</p>
               <p className="mt-2 break-all">
                 db_query = User.query.include(posts)
               </p>

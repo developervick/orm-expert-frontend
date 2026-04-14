@@ -54,7 +54,7 @@ export default function BlogPost() {
               </div>
               <div>
                 <p className="font-bold text-surface-900 text-lg">Alex Developer</p>
-                <p className="text-sm font-medium text-surface-500">Ex-Stripe Staff Engineer • Instructor at dobit.ai</p>
+                <p className="text-sm font-medium text-surface-500">Ex-Stripe Staff Engineer • Instructor at inteleek.ai</p>
               </div>
             </div>
             
@@ -183,7 +183,7 @@ export default function BlogPost() {
           <div className="relative z-10">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">Stop reading. Start building.</h2>
             <p className="text-lg text-surface-300 font-medium mb-8 max-w-2xl mx-auto">
-              You know the theory of the Token Bucket. Now implement it. Open the dobit.ai local sandbox and try to write a thread-safe rate limiter in Python.
+              You know the theory of the Token Bucket. Now implement it. Open the inteleek.ai local sandbox and try to write a thread-safe rate limiter in Python.
             </p>
             <Link href="/interview" className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-8 py-4 rounded-full text-lg font-black transition-all shadow-xl active:scale-95">
               Launch Local Sandbox <ArrowRight className="w-5 h-5" />

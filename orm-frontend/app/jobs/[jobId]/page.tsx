@@ -55,7 +55,7 @@ export default function JobListingPage() {
               <BrainCircuit className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <span className="text-2xl sm:text-3xl font-black text-surface-950 tracking-tighter">
-              dobit<span className="text-brand-600">.ai</span>
+              inteleek<span className="text-brand-600">.ai</span>
             </span>
           </Link>
 
@@ -190,7 +190,7 @@ export default function JobListingPage() {
               <div>
                 <h3 className="text-xl font-bold text-white mb-2">Bypass the ATS Black Hole</h3>
                 <p className="text-surface-300 font-medium leading-relaxed text-sm sm:text-base">
-                  NeuralNet Technologies is a verified <strong>dobit.ai</strong> partner. When you apply using your AI Match Score, your completed local sandboxes and mock interview transcripts are submitted as your Proof of Work, allowing you to skip the initial technical phone screen.
+                  NeuralNet Technologies is a verified <strong>inteleek.ai</strong> partner. When you apply using your AI Match Score, your completed local sandboxes and mock interview transcripts are submitted as your Proof of Work, allowing you to skip the initial technical phone screen.
                 </p>
               </div>
             </section>
@@ -266,10 +266,10 @@ export default function JobListingPage() {
               <BrainCircuit className="w-5 h-5" />
             </div>
             <span className="text-2xl font-black text-white tracking-tighter">
-              dobit<span className="text-brand-400">.ai</span>
+              inteleek<span className="text-brand-400">.ai</span>
             </span>
           </Link>
-          <p className="text-sm font-medium">© 2026 Dobit Technologies. All rights reserved.</p>
+          <p className="text-sm font-medium">© 2026 inteleek Technologies. All rights reserved.</p>
         </div>
       </footer>
 

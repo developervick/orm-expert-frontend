@@ -89,7 +89,7 @@ export default function ExtensibleSignupPage() {
               <BrainCircuit className="w-5 h-5" />
             </div>
             <span className="text-2xl font-black text-surface-950 tracking-tighter">
-              dobit<span className={colors.text}>.portal</span>
+              inteleek<span className={colors.text}>.portal</span>
             </span>
           </Link>
           <Link href="/" className="flex items-center gap-2 text-sm font-bold text-surface-500 hover:text-surface-900 transition-colors">
@@ -247,7 +247,7 @@ export default function ExtensibleSignupPage() {
         <div className="relative z-10 flex items-center gap-3">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-surface-200 rounded-full shadow-sm">
             <Sparkles className={`w-4 h-4 ${colors.text}`} />
-            <span className="text-surface-800 text-sm font-bold">dobit.ai for {activeRole.label}s</span>
+            <span className="text-surface-800 text-sm font-bold">inteleek.ai for {activeRole.label}s</span>
           </div>
         </div>
 

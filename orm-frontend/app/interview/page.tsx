@@ -164,7 +164,7 @@ export default function InterviewPage() {
                   <BrainCircuit className="w-10 h-10 text-brand-300" />
                 </div>
                 <div className="absolute bottom-3 left-3 bg-surface-900/80 backdrop-blur-md text-white text-xs font-bold px-2 py-1 rounded-md flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-success-500 animate-pulse"></div> dobit.ai Engine
+                  <div className="w-2 h-2 rounded-full bg-success-500 animate-pulse"></div> inteleek.ai Engine
                 </div>
                 <div className="absolute bottom-3 right-3 flex gap-2">
                   <div className="bg-surface-900/80 p-1.5 rounded-md text-surface-300"><Mic className="w-4 h-4"/></div>

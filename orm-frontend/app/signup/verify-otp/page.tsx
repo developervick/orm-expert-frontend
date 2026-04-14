@@ -105,7 +105,7 @@ export default function VerifyOTPPage() {
             <BrainCircuit className="w-5 h-5" />
           </div>
           <span className="text-2xl font-black text-surface-950 tracking-tighter hidden sm:block">
-            dobit<span className="text-brand-600">.ai</span>
+            inteleek<span className="text-brand-600">.ai</span>
           </span>
         </Link>
         <Link href="/signup" className="flex items-center gap-2 text-sm font-bold text-surface-500 hover:text-surface-900 transition-colors">

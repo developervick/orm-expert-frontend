@@ -176,7 +176,7 @@ function AIDeepDiveSection() {
                 <BrainCircuit className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
               <div>
-                <p className="font-bold text-brand-300 mb-1 text-sm sm:text-base">dobit.ai Consultant</p>
+                <p className="font-bold text-brand-300 mb-1 text-sm sm:text-base">inteleek.ai Consultant</p>
                 <p className="text-xs sm:text-sm text-surface-300 leading-relaxed">
                   Your Django ORM query here is going to hit the database 50 separate times in this loop. Refactor this using <code className="bg-surface-800 px-1 py-0.5 rounded text-surface-100">select_related()</code> or <code className="bg-surface-800 px-1 py-0.5 rounded text-surface-100">prefetch_related()</code> before we move on to the system design round.
                 </p>
@@ -202,7 +202,7 @@ function AIDeepDiveSection() {
             A Senior Engineer, living right on your local machine.
           </h2>
           <p className="text-base sm:text-lg text-surface-300 font-medium leading-relaxed mb-8">
-            Forget waiting on cloud APIs or worrying about your code being used as training data. The dobit.ai engine runs entirely on your local environment. It&apos;s an independent technical consultant that securely reviews your proprietary code, catches N+1 query bottlenecks, and pushes you to write cleaner architecture.
+            Forget waiting on cloud APIs or worrying about your code being used as training data. The inteleek.ai engine runs entirely on your local environment. It&apos;s an independent technical consultant that securely reviews your proprietary code, catches N+1 query bottlenecks, and pushes you to write cleaner architecture.
           </p>
           <ul className="space-y-3 sm:space-y-4 text-left inline-block lg:block">
             {['Private context-aware code reviews', 'System design critiques', 'Real-time mock interview feedback'].map((item, i) => (
@@ -256,14 +256,14 @@ function TestimonialSection() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-surface-950 tracking-tight mb-4">
-            Engineers love <span className="text-brand-600">dobit.ai</span>
+            Engineers love <span className="text-brand-600">inteleek.ai</span>
           </h2>
         </div>
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {[
             { quote: "Having the AI run locally means I can bounce highly experimental RAG architectures off it without any data privacy concerns. It's the ultimate sparring partner.", author: "Alex T.", role: "Independent AI Researcher" },
             { quote: "I was failing every system design round because my knowledge was purely theoretical. The interactive sandbox forced me to actually implement the joins and caching layers. It got me the offer.", author: "Sam D.", role: "SDE 1" },
-            { quote: "Standard courses hold your hand too much. dobit.ai acts like a strict tech lead who refuses to approve your PR until your code is actually optimized.", author: "Jordan K.", role: "Fullstack Dev" }
+            { quote: "Standard courses hold your hand too much. inteleek.ai acts like a strict tech lead who refuses to approve your PR until your code is actually optimized.", author: "Jordan K.", role: "Fullstack Dev" }
           ].map((t, i) => (
             <div key={i} className="bg-surface-50 p-6 sm:p-8 rounded-2xl border border-surface-200 relative flex flex-col justify-between">
               <div>

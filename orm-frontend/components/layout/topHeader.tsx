@@ -1,3 +1,4 @@
+"use client";
 import { useState } from 'react';
 import { 
   ArrowRight, BrainCircuit, LogIn, Menu, X
@@ -22,7 +23,7 @@ export default function TopHeader() {
               <BrainCircuit className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <span className="text-2xl sm:text-3xl font-black text-surface-950 tracking-tighter">
-              dobit<span className="text-brand-600">.ai</span>
+              inteleek<span className="text-brand-600">.ai</span>
             </span>
           </Link>
 
