@@ -34,11 +34,10 @@ function isPublicPath(pathname: string) {
   );
 }
 
-function getAuthToken(request: NextRequest) {
+function getRefreshToken(request: NextRequest): boolean {
   return (
-    request.cookies.get("accessToken")?.value ||
-    request.cookies.get("access_token")?.value ||
-    request.cookies.get("token")?.value
+    request.cookies.get("refreshToken")?.value !== undefined &&
+    request.cookies.get("refreshToken")?.value !== ""
   );
 }
 
@@ -49,9 +48,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = getAuthToken(request);
-
-  if (!token) {
+  const refreshToken = getRefreshToken(request);
+  if (!refreshToken) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("redirect", pathname);
