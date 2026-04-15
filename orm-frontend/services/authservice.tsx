@@ -32,12 +32,15 @@ const AuthContext = createContext<AuthContextType | null>(null);
 const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [userId, setUserId] = useLocalStorageState<number | null>('userId', null);
     const [email, setEmail] = useLocalStorageState<string | null>('email', null);
-    const [loading, setLoading] = useLocalStorageState('loading', false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useLocalStorageState<unknown | null>('error', null);
     const [is_loggedIn, setIsLoggedIn] = useLocalStorageState('is_loggedIn', false);
     const [user, setUser] = useLocalStorageState<LoginType | null>('user', null);
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+
+    console.log('AuthProvider Rendered - is_loggedIn:', is_loggedIn, 'userId:', userId);
 
 
     useEffect(() => {
@@ -61,14 +64,12 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         const storedUserId = localStorage.getItem('userId');
         const storedIsLoggedIn = localStorage.getItem('is_loggedIn');
         const storedEmail = localStorage.getItem('email');
-        const storedLoading = localStorage.getItem('loading');
         const storedError = localStorage.getItem('error');
 
         if (storedUser) setUser(JSON.parse(storedUser));
         if (storedUserId) setUserId(JSON.parse(storedUserId));
         if (storedIsLoggedIn) setIsLoggedIn(JSON.parse(storedIsLoggedIn));
         if (storedEmail) setEmail(JSON.parse(storedEmail));
-        if (storedLoading) setLoading(JSON.parse(storedLoading));
         if (storedError) setError(JSON.parse(storedError));
     }, []);
 
@@ -84,9 +85,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const silentRefresh = async (): Promise<string | null> => {
         try {
-            const res = await ky.post('api/token/refresh/', {
-                prefixUrl: process.env.NEXT_PUBLIC_BACKEND_API,
+            const res = await ky.post('api/v1/token/refresh/', {
                 credentials: 'include',
+                prefixUrl: process.env.NEXT_PUBLIC_BACKEND_API,
             }).json<ApiResponseType<refreshTokenResponseType>>();
             setAccessToken(res.data.access);
             scheduleRefresh(res.data.access);  // schedule next refresh
@@ -95,6 +96,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
             // Refresh token expired or missing — user must log in again
             setUser(null);
             setAccessToken(null);
+            setIsLoggedIn(false);
             return null;
         }
     };
@@ -118,6 +120,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         setError(null);
         try {
             const response = await ky.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/v1/login/`, {
+                credentials: 'include',
                 json: { email, password }
             });
             const data = await response.json<ApiResponseType<LoginType>>();
@@ -162,6 +165,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
                     otp,
                     uuid
                 },
+                credentials: 'include',
             });
             const res = await response.json<ApiResponseType<VerifyType>>();
             setUserId(res.data.userId);
@@ -222,6 +226,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         </AuthContext.Provider>
     );
 }
+
 
 export const useAuth = () => {
     const context = useContext(AuthContext);

@@ -6,16 +6,17 @@ import {
 import {NavLink, MobileNavLink} from '../ui/navLink';
 import Link from 'next/link';
 import { useAuth } from '@/services/authservice';
+import { useRouter } from 'next/navigation';
 
 
 export default function TopHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const auth = useAuth();
+  const router = useRouter();
 
-  console.log('Auth Context:', auth.is_loggedIn);
-  
+
   return (
-    <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200">
+    <nav className="fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-md z-50 border-b border-surface-200" >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
           
           <Link href="/" className="flex items-center gap-2 group z-50">
@@ -37,19 +38,20 @@ export default function TopHeader() {
           </div>
 
           {/* Desktop CTAs */}
-          <div className="hidden md:flex items-center gap-3">
-            {
-            !auth.is_loggedIn ? (
-              <Link href="/login" className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">
+          <div className="hidden md:flex items-center gap-3" suppressHydrationWarning>
+            { auth.loading ? (
+              <div className="w-20 h-8 bg-surface-200 rounded-full animate-pulse"></div>
+            ) : !auth.is_loggedIn ? (
+              <button onClick={()=> router.push('/login')} className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors" >
                 Login
-              </Link>
+              </button>
             ) : <button onClick={auth.logoutAction} className="text-sm font-semibold text-surface-700 hover:text-brand-600 transition-colors">
                 Logout
               </button>
             }
-            <Link href={auth.is_loggedIn ? "/dashboard" : "/signup"} className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 group">
+            <button onClick={()=> router.push(auth.is_loggedIn ? '/dashboard' : '/login')} className="flex items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-6 py-2.5 rounded-full font-bold transition-all shadow-lg shadow-brand-500/20 active:scale-95 group" >
               Start Free <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </button>
           </div>
           <div className="hidden md:flex items-center gap-3">
             <Link href="/partner/login" className="flex items-center gap-2 text-surface-700 px-6 py-2.5 transition-all group">
